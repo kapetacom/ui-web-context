@@ -1,6 +1,6 @@
 {
     "name": "@blockware/ui-web-context",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "main": "index.js",
     "description": "Provides shared interface for interacting with blockware UI",
     "keywords": [
@@ -8,12 +8,16 @@
     ],
     "license": "MIT",
     "dependencies": {
-        "@blockware/ui-web-types": "0.0.1",
-        "@blockware/ui-web-utils": "0.0.2",
+        "@blockware/ui-web-types": "0.0.2",
+        "@blockware/ui-web-utils": "0.0.3"
+    },
+    "devDependencies": {
         "@types/lodash": "4.14.149",
         "@types/node": "13.1.6",
         "@types/socket.io-client": "1.4.32",
         "@types/yaml": "1.2.0",
-        "socket.io-client": "2.3.0"
+        "lodash": "^4.17.15",
+        "socket.io-client": "2.3.0",
+        "yaml": "^1.7.2"
     }
 }

@@ -2,12 +2,16 @@ import SocketService from "./SocketService";
 import { clusterPath } from "./ClusterConfig";
 import _ from "lodash";
 
-import { FailedBlockMessage } from "components/planner/Planner";
-
 export enum InstanceEventType {
     EVENT_INSTANCE_CHANGED = 'status-changed',
     EVENT_INSTANCE_CREATED = 'instance-created',
     EVENT_INSTANCE_EXITED = 'instance-exited'
+}
+
+export interface FailedBlockMessage {
+    error:string,
+    status:InstanceEventType,
+    instanceId:string
 }
 
 export enum InstanceStatus {
