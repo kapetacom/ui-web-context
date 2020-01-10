@@ -33,7 +33,7 @@ export type PlanStatusListener = (res: SystemInfo) => void;
 export type BlockStatusListener = (message: FailedBlockMessage) => void;
 
 const contextHandlers: any[] = [];
-const joinedRooms = {};
+const joinedRooms:{[key:string]:number} = {};
 
 class InstanceServiceImpl {
     // The ID can be both a block ID or A PLAN ID
@@ -54,8 +54,7 @@ class InstanceServiceImpl {
             }
 
             return handler(evt.payload);
-        }
-
+        };
 
         contextHandlers.push({ handler, contextHandler });
 

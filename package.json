@@ -1,23 +1,42 @@
 {
     "name": "@blockware/ui-web-context",
-    "version": "0.0.4",
-    "main": "index.js",
+    "version": "0.0.5",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
     "description": "Provides shared interface for interacting with blockware UI",
     "keywords": [
         "blockware"
     ],
     "license": "MIT",
+    "scripts": {
+        "prepublishOnly": "npm run build",
+        "type-check": "tsc --noEmit",
+        "type-check:watch": "npm run type-check -- --watch",
+        "build": "npm run build:types && npm run build:js",
+        "build:types": "tsc --emitDeclarationOnly",
+        "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline"
+    },
     "dependencies": {
-        "@blockware/ui-web-types": "0.0.2",
-        "@blockware/ui-web-utils": "0.0.3",
+        "@types/lodash": "4.14.149",
+        "@types/node": "13.1.6",
+        "@types/socket.io-client": "1.4.32",
+        "@types/yaml": "1.2.0",
+        "@blockware/ui-web-types": "0.0.7",
+        "@blockware/ui-web-utils": "0.0.5",
         "lodash": "4.17.15",
         "socket.io-client": "2.3.0",
         "yaml": "^1.7.2"
     },
     "devDependencies": {
-        "@types/lodash": "4.14.149",
-        "@types/node": "13.1.6",
-        "@types/socket.io-client": "1.4.32",
-        "@types/yaml": "1.2.0"
+        "@babel/cli": "^7.7.7",
+        "@babel/core": "^7.7.7",
+        "@babel/plugin-proposal-class-properties": "^7.7.4",
+        "@babel/plugin-proposal-numeric-separator": "^7.7.4",
+        "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
+        "@babel/preset-env": "^7.7.7",
+        "@babel/preset-typescript": "^7.7.7",
+        "react": "^16.12.0",
+        "react-dom": "^16.12.0",
+        "typescript": "^3.7.4"
     }
 }
