@@ -7,7 +7,7 @@ class ResourceTypeProviderImpl {
     private resourceTypeMap = new Map<string, ResourceConfig>();
 
     get(key: string) {
-        const config = this.resourceTypeMap.get(key);
+        const config = this.resourceTypeMap.get(key.toLowerCase());
         if (!config) {
             throw new Error(`Resource type with kind ${key} not found.`);
         }
@@ -24,7 +24,7 @@ class ResourceTypeProviderImpl {
 
 
     register(component: ResourceConfig) {
-        this.resourceTypeMap.set(component.kind, component);
+        this.resourceTypeMap.set(component.kind.toLowerCase(), component);
     }
 
     canApplyResourceToKind(resourceKind:string, targetKind:string) {

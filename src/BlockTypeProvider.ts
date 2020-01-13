@@ -7,7 +7,7 @@ class BlockTypeProviderImpl {
     private defaultKind?:string;
 
     get(key: string) {
-        const config = this.blockTypeMap.get(key)
+        const config = this.blockTypeMap.get(key.toLowerCase())
         if (!config) {
             throw new Error(`Block type with kind ${key} not found.`);
         }
@@ -30,10 +30,11 @@ class BlockTypeProviderImpl {
     }
 
     register(component: BlockConfig) {
-        this.blockTypeMap.set(component.kind, component);
+        let kind = component.kind.toLowerCase();
+        this.blockTypeMap.set(kind, component);
 
         if (!this.defaultKind) {
-            this.defaultKind = component.kind;
+            this.defaultKind = kind;
         }
     }
 
