@@ -1,6 +1,6 @@
 {
     "name": "@blockware/ui-web-context",
-    "version": "0.0.10",
+    "version": "0.0.11",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "Provides shared interface for interacting with blockware UI",
@@ -35,7 +35,6 @@
     "devDependencies": {
         "@types/lodash": "4.14.149",
         "@types/node": "13.1.6",
-
         "@types/yaml": "1.2.0",
         "@babel/cli": "^7.7.7",
         "@babel/core": "^7.7.7",
