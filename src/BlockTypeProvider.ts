@@ -25,6 +25,10 @@ class BlockTypeProviderImpl {
         return Array.from(this.blockTypeMap.keys());
     }
 
+    exists(kind:string) {
+        return this.kinds().includes(kind.toLowerCase());
+    }
+
     list() {
         return Array.from(this.blockTypeMap.values());
     }

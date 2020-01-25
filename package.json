@@ -29,7 +29,7 @@
         "lodash": "^4.17.15",
         "socket.io-client": "^2.3.0",
         "yaml": "^1.7.2",
-        "@blockware/ui-web-types": "^0.0.9",
+        "@blockware/ui-web-types": "^0.0.12",
         "@blockware/ui-web-utils": "^0.0.6"
     },
     "devDependencies": {
@@ -44,7 +44,7 @@
         "@babel/preset-env": "^7.7.7",
         "@babel/preset-typescript": "^7.7.7",
         "typescript": "^3.7.4",
-        "@blockware/ui-web-types": "^0.0.9",
+        "@blockware/ui-web-types": "^0.0.12",
         "@blockware/ui-web-utils": "^0.0.6"
     }
 }

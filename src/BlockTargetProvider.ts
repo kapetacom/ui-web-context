@@ -27,6 +27,14 @@ class BlockTargetProviderImpl {
         });
     }
 
+    kinds() {
+        return Array.from(this.targetMap.keys());
+    }
+
+    exists(kind:string) {
+        return this.kinds().includes(kind.toLowerCase());
+    }
+
     register(target: TargetConfig) {
         this.targetMap.set(target.kind.toLowerCase(), target);
     }
