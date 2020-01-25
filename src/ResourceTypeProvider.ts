@@ -22,6 +22,9 @@ class ResourceTypeProviderImpl {
         return Array.from(this.resourceTypeMap.keys());
     }
 
+    exists(kind:string) {
+        return this.kinds().includes(kind.toLowerCase());
+    }
 
     register(component: ResourceConfig) {
         this.resourceTypeMap.set(component.kind.toLowerCase(), component);
