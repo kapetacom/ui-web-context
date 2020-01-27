@@ -11,10 +11,8 @@ export interface BlockStore {
 class BlockServiceImpl implements BlockStore {
     async list():Promise<Asset<BlockKind>[]> {
         const assets = await AssetService.list();
-        const kinds = BlockTypeProvider.kinds();
         return assets.filter((asset) => {
-            return asset.exists &&
-                kinds.indexOf(asset.kind) > -1;
+            return asset.exists && BlockTypeProvider.exists(asset.kind)
         });
     }
 

@@ -7,7 +7,7 @@ export const PlannerService = {
         const assets = await AssetService.list();
         return assets.filter((asset) => {
             return asset.exists &&
-                asset.kind === PLAN_KIND;
+                asset.kind.toLowerCase() === PLAN_KIND.toLowerCase();
         });
     },
     async get(ref: string): Promise<Asset<PlanKind>> {
