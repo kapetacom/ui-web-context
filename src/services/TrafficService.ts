@@ -4,6 +4,7 @@ import {Traffic} from "@blockware/ui-web-types";
 export enum TrafficEventType {
     TRAFFIC_START = 'traffic_start',
     TRAFFIC_END = 'traffic_end'
+
 }
 
 
@@ -12,7 +13,7 @@ export type ConnectionListener = (traffic:Traffic) => void
 class TrafficServiceImpl {
 
     subscribe(connectionId:string, eventType:TrafficEventType, handler:ConnectionListener) {
-
+        
         SocketService.joinRoom(connectionId);
         SocketService.on(eventType, handler);
 
