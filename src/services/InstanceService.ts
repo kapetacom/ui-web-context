@@ -5,7 +5,9 @@ import _ from "lodash";
 export enum InstanceEventType {
     EVENT_INSTANCE_CHANGED = 'status-changed',
     EVENT_INSTANCE_CREATED = 'instance-created',
-    EVENT_INSTANCE_EXITED = 'instance-exited'
+    EVENT_INSTANCE_EXITED = 'instance-exited',
+    EVENT_INSTANCE_STDOUT_LOG = 'instance-stdout-log',
+    EVENT_INSTANCE_STDERR_LOG = 'instance-stderr-log'
 }
 
 export interface FailedBlockMessage {

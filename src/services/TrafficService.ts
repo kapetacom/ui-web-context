@@ -3,8 +3,7 @@ import {Traffic} from "@blockware/ui-web-types";
 
 export enum TrafficEventType {
     TRAFFIC_START = 'traffic_start',
-    TRAFFIC_END = 'traffic_end',
-    TRAFFIC_LOG = 'instance-log'
+    TRAFFIC_END = 'traffic_end'
 
 }
 
