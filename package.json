@@ -1,6 +1,6 @@
 {
     "name": "@blockware/ui-web-context",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "Provides shared interface for interacting with blockware UI",
