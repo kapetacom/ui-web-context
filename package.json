@@ -15,6 +15,7 @@
     "scripts": {
         "prepublishOnly": "npm run build",
         "type-check": "tsc --noEmit",
+        "start": "nodemon -e js,jsx,less,ts,tsx,json --ignore dist/ --ignore node_modules/ --exec 'npm run build'",
         "type-check:watch": "npm run type-check -- --watch",
         "build": "npm run build:types && npm run build:js",
         "build:types": "tsc --emitDeclarationOnly",
@@ -33,9 +34,6 @@
         "@blockware/ui-web-utils": "^0.0.6"
     },
     "devDependencies": {
-        "@types/lodash": "4.14.149",
-        "@types/node": "13.1.6",
-        "@types/yaml": "1.2.0",
         "@babel/cli": "^7.7.7",
         "@babel/core": "^7.7.7",
         "@babel/plugin-proposal-class-properties": "^7.7.4",
@@ -43,8 +41,12 @@
         "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
         "@babel/preset-env": "^7.7.7",
         "@babel/preset-typescript": "^7.7.7",
-        "typescript": "^3.7.4",
         "@blockware/ui-web-types": "^0.0.12",
-        "@blockware/ui-web-utils": "^0.0.6"
+        "@blockware/ui-web-utils": "^0.0.6",
+        "@types/lodash": "4.14.149",
+        "@types/node": "13.1.6",
+        "@types/yaml": "1.2.0",
+        "nodemon": "^2.0.2",
+        "typescript": "^3.7.4"
     }
 }
