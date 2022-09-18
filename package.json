@@ -1,8 +1,14 @@
 {
     "name": "@blockware/ui-web-context",
     "version": "0.0.22",
-    "main": "dist/index.js",
+    "main": "dist/cjs/index.js",
+    "module": "dist/esm/index.js",
     "types": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "package.json",
+        "README.md"
+    ],
     "description": "Provides shared interface for interacting with blockware UI",
     "private": false,
     "publishConfig": {
@@ -13,41 +19,40 @@
     ],
     "license": "MIT",
     "scripts": {
-        "prepublishOnly": "npm run build",
-        "type-check": "tsc --noEmit",
-        "start": "nodemon -e js,jsx,less,ts,tsx,json --ignore dist/ --ignore node_modules/ --exec 'npm run build'",
-        "type-check:watch": "npm run type-check -- --watch",
-        "build": "npm run build:types && npm run build:js",
-        "build:types": "tsc --emitDeclarationOnly",
-        "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline"
-    },
-    "dependencies": {
-        "@types/socket.io-client": "1.4.32"
+        "prebuild": "rm -rf dist",
+        "start": "rollup -c -w",
+        "build": "npm run prebuild && rollup -c",
+        "prepublishOnly": "npm run build"
     },
     "peerDependencies": {
-        "@blockware/ui-web-types": "^0.0.22",
-        "@blockware/ui-web-utils": "^0.0.13",
-        "lodash": "^4.17.15",
-        "react": "^16.12.0",
-        "react-dom": "^16.12.0",
-        "socket.io-client": "^2.3.0",
-        "yaml": "^1.7.2"
+        "@blockware/ui-web-types": "<2",
+        "@blockware/ui-web-utils": "<2",
+        "lodash": ">=4",
+        "react": ">=18",
+        "react-dom": ">=18",
+        "socket.io-client": "^4.x",
+        "yaml": ">=1"
     },
     "devDependencies": {
-        "@babel/cli": "^7.7.7",
-        "@babel/core": "^7.7.7",
-        "@babel/plugin-proposal-class-properties": "^7.7.4",
-        "@babel/plugin-proposal-numeric-separator": "^7.7.4",
-        "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
-        "@babel/preset-env": "^7.7.7",
-        "@babel/preset-typescript": "^7.7.7",
-        "@blockware/ui-web-types": "^0.0.22",
-        "@blockware/ui-web-utils": "^0.0.13",
-        "@types/lodash": "4.14.149",
-        "@types/node": "13.1.6",
-        "@types/react": "^16.12.0",
-        "@types/yaml": "1.2.0",
-        "nodemon": "^2.0.2",
-        "typescript": "^3.7.4"
+        "@blockware/ui-web-types": "<2",
+        "@blockware/ui-web-utils": "<2",
+        "@rollup/plugin-commonjs": "^21.1.0",
+        "@rollup/plugin-node-resolve": "^14.1.0",
+        "@rollup/plugin-typescript": "^8.5.0",
+        "@types/lodash": "4.14.185",
+        "@types/node": "18.7.18",
+        "@types/react": ">=18",
+        "@types/react-dom": ">=18",
+        "@types/socket.io-client": "^3.x",
+        "@types/yaml": "1.9.7",
+        "events": "^3.3.0",
+        "react": ">=18",
+        "react-dom": ">=18",
+        "rollup": "^2.79.0",
+        "rollup-plugin-dts": "^4.2.2",
+        "rollup-plugin-peer-deps-external": "^2.2.4",
+        "rollup-plugin-terser": "^7.0.2",
+        "tslib": "^2.4.0",
+        "typescript": "^4.8.3"
     }
 }

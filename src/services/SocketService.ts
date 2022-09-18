@@ -1,12 +1,12 @@
 
-import socketIOClient from "socket.io-client";
+import {Socket, io} from "socket.io-client";
 import { socketPath } from "./ClusterConfig";
 
 class SocketService{
-    _socket: SocketIOClient.Socket;
+    _socket: Socket;
 
     constructor() {
-        this._socket = socketIOClient(socketPath());
+        this._socket = io(socketPath());
     }
 
     joinRoom(roomId: string) {
@@ -17,12 +17,12 @@ class SocketService{
         this._socket.emit("leave", roomId)
     }
 
-    on(eventType:string, handler:Function) {
+    on(eventType:string, handler:any) {
         this._socket.on(eventType, handler);
     }
 
-    off(eventType:string, handler:Function) {
-        this._socket.removeEventListener(eventType, handler);
+    off(eventType:string, handler:any) {
+        this._socket.off(eventType, handler);
     }
     
     socket() {
