@@ -142,6 +142,17 @@ class InstanceServiceImpl {
             return error
         }
     }
+
+    async getInstanceLogs(systemId: string, instanceId: string) {
+        try {
+            const result = await fetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/logs`), { method: "GET" });
+            return result.json();
+
+        } catch (error) {
+            console.log(error);
+            return error
+        }
+    }
 }
 
 export const InstanceService =  new InstanceServiceImpl();
