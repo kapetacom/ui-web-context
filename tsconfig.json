@@ -4,6 +4,7 @@
     "module": "esnext",
     "jsx": "react",
     "sourceMap": true,
+    "inlineSourceMap": true,
     "declaration": true,
     "declarationDir": "types",
     "outDir": "dist",

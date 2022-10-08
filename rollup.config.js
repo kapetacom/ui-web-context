@@ -14,13 +14,13 @@ export default [
             {
                 file: packageJson.main,
                 format: "cjs",
-                sourcemap: true,
+                sourcemap: 'inline',
                 name: packageJson.name,
             },
             {
                 file: packageJson.module,
                 format: "esm",
-                sourcemap: true
+                sourcemap: 'inline'
             }
         ],
         plugins: [
