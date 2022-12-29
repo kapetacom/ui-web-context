@@ -1,13 +1,14 @@
 import * as _ from 'lodash';
 
 import {ResourceConfig, ResourceKind, ResourceConverter} from "@blockware/ui-web-types";
+import {VersionMap} from "./VersionMap";
 
 class ResourceTypeProviderImpl {
 
-    private resourceTypeMap = new Map<string, ResourceConfig>();
+    private resourceTypeMap = new VersionMap<ResourceConfig>();
 
     get(key: string) {
-        const config = this.resourceTypeMap.get(key.toLowerCase());
+        const config = this.resourceTypeMap.get(key);
         if (!config) {
             throw new Error(`Resource type with kind ${key} not found.`);
         }
@@ -15,19 +16,19 @@ class ResourceTypeProviderImpl {
     }
 
     list() {
-        return Array.from(this.resourceTypeMap.values());
+        return this.resourceTypeMap.list();
     }
 
     kinds() {
-        return Array.from(this.resourceTypeMap.keys());
+        return this.resourceTypeMap.kinds();
     }
 
     exists(kind:string) {
-        return this.kinds().includes(kind.toLowerCase());
+        return this.resourceTypeMap.exists(kind);
     }
 
     register(component: ResourceConfig) {
-        this.resourceTypeMap.set(component.kind.toLowerCase(), component);
+        this.resourceTypeMap.add(component);
     }
 
     canApplyResourceToKind(resourceKind:string, targetKind:string) {
