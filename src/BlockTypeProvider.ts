@@ -1,8 +1,9 @@
 import {BlockConfig} from "@blockware/ui-web-types";
+import {VersionMap} from "./VersionMap";
 
 class BlockTypeProviderImpl {
 
-    private blockTypeMap = new Map<string, BlockConfig>();
+    private blockTypeMap = new VersionMap<BlockConfig>();
 
     private defaultKind?:string;
 
@@ -22,23 +23,24 @@ class BlockTypeProviderImpl {
     }
 
     kinds() {
-        return Array.from(this.blockTypeMap.keys());
+        return this.blockTypeMap.kinds();
     }
 
     exists(kind:string) {
-        return this.kinds().includes(kind.toLowerCase());
+        return this.blockTypeMap.exists(kind);
     }
 
     list() {
-        return Array.from(this.blockTypeMap.values());
+        return this.blockTypeMap.list();
     }
 
     register(component: BlockConfig) {
         let kind = component.kind.toLowerCase();
-        this.blockTypeMap.set(kind, component);
+        this.blockTypeMap.add(component);
 
-        if (!this.defaultKind) {
-            this.defaultKind = kind;
+        if (!this.defaultKind || this.defaultKind.startsWith(kind + ':')) {
+            //Make sure we use the latest if we have multiple versions
+            this.defaultKind = `${kind}:${this.blockTypeMap.getLatestVersion(kind)}`;
         }
     }
 
