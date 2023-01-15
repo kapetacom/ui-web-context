@@ -13,7 +13,8 @@ if (isElectron()) {
     baseUrl = process.env.REACT_APP_CLUSTER_SERVICE;
 } else if (typeof window !== 'undefined' &&
     window['Blockware'] &&
-    window['Blockware']['config']) {
+    window['Blockware']['config'] &&
+    window['Blockware']['config'].cluster_service) {
     //We're inside a browser
     baseUrl = window['Blockware']['config'].cluster_service;
 }
