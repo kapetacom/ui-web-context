@@ -1,7 +1,5 @@
 import {electronRemote, isElectron} from "@blockware/ui-web-utils";
 
-const querystring = require('querystring');
-
 let baseUrl;
 
 if (isElectron()) {
@@ -28,13 +26,13 @@ export function clusterPath(path:string, query?:{[key:string]:string}) {
 
     let base = CLUSTER_SERVICE_BASEURL;
     if (base.endsWith('/') ) {
-        base = base.substr(0, base.length - 1);
+        base = base.substring(0, base.length - 1);
     }
 
     let url = base + path;
 
     if (query) {
-        url += '?' + querystring.stringify(query);
+        url += '?' + new URLSearchParams(query).toString();
     }
 
     return url;
