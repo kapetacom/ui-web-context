@@ -1,6 +1,7 @@
 
 import {Socket, io} from "socket.io-client";
 import { socketPath } from "./ClusterConfig";
+import {asSingleton} from "../utils";
 
 class SocketService {
     private readonly _socket: Socket;
@@ -42,4 +43,4 @@ class SocketService {
     }
 }
 
-export default new SocketService();
+export default asSingleton('SocketService', new SocketService());

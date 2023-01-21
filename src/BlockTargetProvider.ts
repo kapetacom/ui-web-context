@@ -1,5 +1,6 @@
 import {TargetConfig} from "@blockware/ui-web-types";
 import {VersionMap} from "./VersionMap";
+import {asSingleton} from "./utils";
 
 function containsIgnoreCase(list:string[], key:string) {
     return list.map((val) => val.toLowerCase()).indexOf(key.toLowerCase()) > -1;
@@ -46,4 +47,4 @@ class BlockTargetProviderImpl {
 
 }
 
-export const BlockTargetProvider = new BlockTargetProviderImpl();
+export const BlockTargetProvider = asSingleton('BlockTargetProvider', new BlockTargetProviderImpl());

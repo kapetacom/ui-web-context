@@ -2,6 +2,7 @@ import * as _ from 'lodash';
 
 import {ResourceConfig, ResourceKind, ResourceConverter} from "@blockware/ui-web-types";
 import {VersionMap} from "./VersionMap";
+import {asSingleton} from "./utils";
 
 class ResourceTypeProviderImpl {
 
@@ -102,4 +103,4 @@ class ResourceTypeProviderImpl {
     }
 }
 
-export const ResourceTypeProvider = new ResourceTypeProviderImpl();
+export const ResourceTypeProvider = asSingleton('ResourceTypeProvider', new ResourceTypeProviderImpl());

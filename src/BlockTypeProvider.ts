@@ -1,5 +1,6 @@
 import {BlockConfig} from "@blockware/ui-web-types";
 import {VersionMap} from "./VersionMap";
+import {asSingleton} from "./utils";
 
 class BlockTypeProviderImpl {
 
@@ -46,4 +47,4 @@ class BlockTypeProviderImpl {
 
 }
 
-export const BlockTypeProvider = new BlockTypeProviderImpl();
+export const BlockTypeProvider = asSingleton('BlockTypeProvider', new BlockTypeProviderImpl());

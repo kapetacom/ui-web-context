@@ -2,6 +2,7 @@ import * as Path from "path";
 
 import {FileInfo} from "@blockware/ui-web-types";
 import {clusterPath} from "./ClusterConfig";
+import {asSingleton} from "../utils";
 
 export interface FileSystemStore {
     getHomeFolder: () => Promise<string>
@@ -46,4 +47,4 @@ class FileSystemServiceImpl implements FileSystemStore {
     }
 }
 
-export const FileSystemService = new FileSystemServiceImpl();
+export const FileSystemService = asSingleton('FileSystemService', new FileSystemServiceImpl());

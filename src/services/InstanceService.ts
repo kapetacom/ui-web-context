@@ -1,6 +1,7 @@
 import SocketService from "./SocketService";
 import { clusterPath } from "./ClusterConfig";
 import _ from "lodash";
+import {asSingleton} from "../utils";
 
 export enum InstanceEventType {
     EVENT_INSTANCE_CHANGED = 'status-changed',
@@ -155,4 +156,4 @@ class InstanceServiceImpl {
     }
 }
 
-export const InstanceService =  new InstanceServiceImpl();
+export const InstanceService =  asSingleton('InstanceService', new InstanceServiceImpl());

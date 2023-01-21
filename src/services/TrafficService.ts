@@ -1,5 +1,6 @@
 import SocketService from "./SocketService";
 import {Traffic} from "@blockware/ui-web-types";
+import {asSingleton} from "../utils";
 
 export enum TrafficEventType {
     TRAFFIC_START = 'traffic_start',
@@ -30,4 +31,4 @@ class TrafficServiceImpl {
 
 }
 
-export const TrafficService = new TrafficServiceImpl()
+export const TrafficService = asSingleton('TrafficService', new TrafficServiceImpl());

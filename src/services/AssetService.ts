@@ -7,6 +7,7 @@ import {
 
 import {clusterPath} from "./ClusterConfig";
 import YAML from 'yaml';
+import {asSingleton} from "../utils";
 
 export interface AssetStore {
     list: () => Promise<Asset[]>
@@ -73,4 +74,4 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
 
 }
 
-export const AssetService = new AssetServiceImpl();
+export const AssetService = asSingleton('AssetService', new AssetServiceImpl());

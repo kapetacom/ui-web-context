@@ -2,6 +2,7 @@ import {AssetService} from './AssetService';
 import {BlockTypeProvider} from '../BlockTypeProvider';
 
 import {Asset, BlockKind} from "@blockware/ui-web-types";
+import {asSingleton} from "../utils";
 
 
 export interface BlockStore {
@@ -21,4 +22,4 @@ class BlockServiceImpl implements BlockStore {
     }
 }
 
-export const BlockService = new BlockServiceImpl();
+export const BlockService = asSingleton('BlockService', new BlockServiceImpl());
