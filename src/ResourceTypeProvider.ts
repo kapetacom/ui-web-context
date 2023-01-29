@@ -20,6 +20,10 @@ class ResourceTypeProviderImpl {
         return this.resourceTypeMap.list();
     }
 
+    getVersionsFor(name:string) {
+        return this.resourceTypeMap.getVersionsFor(name);
+    }
+
     kinds() {
         return this.resourceTypeMap.kinds();
     }

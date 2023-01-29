@@ -27,10 +27,13 @@ class BlockTargetProviderImpl {
 
     list(blockKind:string) {
         const [versionLessKind] = blockKind.split(':');
-        console.log('list targets for blockKind', versionLessKind, this.targetMap.list());
         return this.targetMap.list().filter((target) => {
             return containsIgnoreCase(target.blockKinds, versionLessKind);
         });
+    }
+
+    getVersionsFor(name:string) {
+        return this.targetMap.getVersionsFor(name);
     }
 
     kinds() {

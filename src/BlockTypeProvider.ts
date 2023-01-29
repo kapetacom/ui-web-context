@@ -35,6 +35,10 @@ class BlockTypeProviderImpl {
         return this.blockTypeMap.list();
     }
 
+    getVersionsFor(name:string) {
+        return this.blockTypeMap.getVersionsFor(name);
+    }
+
     register(component: BlockConfig) {
         let kind = component.kind.toLowerCase();
         this.blockTypeMap.add(component);
