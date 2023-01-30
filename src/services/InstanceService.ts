@@ -96,8 +96,17 @@ class InstanceServiceImpl {
             console.log(error);
             return error
         }
+    }
 
+    async getInstanceStatusForPlan(systemId) {
+        try {
+            const result = await fetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/instances`), { method: "GET" });
+            return result.json();
 
+        } catch (error) {
+            console.log(error);
+            return error
+        }
     }
 
     async startInstances(systemId: string) {
