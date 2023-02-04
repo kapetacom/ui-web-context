@@ -43,8 +43,10 @@ class ResourceTypeProviderImpl {
 
         const targetConfig = this.get(targetKind);
 
+        const parsedResourceKind = this.resourceTypeMap.parseKind(resourceKind);
+
         if (targetConfig.converters && 
-            _.find(targetConfig.converters, {fromKind: resourceKind})) {
+            _.find(targetConfig.converters, {fromKind: parsedResourceKind.name})) {
             return true;
         }
 
@@ -74,14 +76,17 @@ class ResourceTypeProviderImpl {
     }
 
     getConverterFor(resourceKind:string, targetKind:string):ResourceConverter|undefined {
-        const targetConfig = this.get(targetKind);
+        const parsedTargetKind = this.resourceTypeMap.parseKind(targetKind);
+        const parsedResourceKind = this.resourceTypeMap.parseKind(resourceKind);
+        const targetConfig = this.get(parsedTargetKind.id);
 
         if (targetConfig.converters) {
-            return _.find(targetConfig.converters, {fromKind: resourceKind});
+            return _.find(targetConfig.converters, {fromKind: parsedResourceKind.name});
         }
 
-        return;
+        return undefined;
     }
+
     
     convertToConsumable(fromKind:ResourceKind):ResourceKind {
         const data = _.cloneDeep(fromKind);
@@ -89,19 +94,24 @@ class ResourceTypeProviderImpl {
         if (!targetConfig.consumableKind) {
             return data;
         }
-        
+
         return this.convertTo(data, targetConfig.consumableKind);
     }
 
     convertTo(fromKind:ResourceKind, targetKind:string):ResourceKind {
-        if (fromKind.kind === targetKind) {
+        const parsedTargetKind = this.resourceTypeMap.parseKind(targetKind);
+        const parsedFromKind = this.resourceTypeMap.parseKind(fromKind.kind);
+
+        if (parsedFromKind.name === parsedTargetKind.name) {
             return {...fromKind};
         }
 
-        const converter = this.getConverterFor(fromKind.kind, targetKind);
+        const converter = this.getConverterFor(fromKind.kind, parsedTargetKind.id);
         if (!converter || !converter.createFrom) {
-             return {...fromKind, kind: targetKind};
+             return {...fromKind, kind: parsedTargetKind.id};
         }
+
+        fromKind.kind = parsedTargetKind.id;
         
         return converter.createFrom(fromKind);
     }

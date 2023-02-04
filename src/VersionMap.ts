@@ -1,3 +1,5 @@
+import {parseBlockwareUri} from '@blockware/nodejs-utils';
+
 interface SomeKind {
     kind:string
     version:string
@@ -44,6 +46,11 @@ class Version {
 
 }
 
+export interface ParsedKind {
+    name:string
+    version:string
+    get id():string
+}
 
 export class VersionMap<T extends SomeKind> {
 
@@ -51,18 +58,25 @@ export class VersionMap<T extends SomeKind> {
 
     private latestVersions = new Map<string, string>();
 
-    private parseKind(kind:string) {
-        if (kind.indexOf(':') > -1) {
-            let [name, version] = kind.split(':');
+    public parseKind(kind:string):ParsedKind {
+        const uri = parseBlockwareUri(kind);
+        if (uri.version) {
             return {
-                name,
-                version
+                name: uri.fullName,
+                version: uri.version,
+                get id() {
+                    return `${uri.fullName}:${uri.version}`;
+                }
             };
         }
 
+        const version = this.latestVersions.get(kind);
         return {
-            name: kind,
-            version: this.latestVersions.get(kind)
+            name: uri.fullName,
+            version,
+            get id() {
+                return `${uri.fullName}:${version}`;
+            }
         }
     }
 
