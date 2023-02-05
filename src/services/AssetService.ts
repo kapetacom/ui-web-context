@@ -12,8 +12,8 @@ import {asSingleton} from "../utils";
 export interface AssetStore {
     list: () => Promise<Asset[]>
     get: (ref:string) => Promise<Asset>;
-    import: (ref:string) => Promise<Asset>
-    create: (path:string, content:SchemaKind) => Promise<Asset>
+    import: (ref:string) => Promise<Asset[]>
+    create: (path:string, content:SchemaKind) => Promise<Asset[]>
     remove: (ref:string) => Promise<void>
 }
 
@@ -28,7 +28,7 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
         return result.json();
     }
 
-    async import(ref:string):Promise<Asset> {
+    async import(ref:string):Promise<Asset[]> {
         const result = await fetch(clusterPath(`/assets/import`, {ref}),{
             method: 'PUT'
         });
@@ -37,7 +37,7 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
         return result.json();
     }
 
-    async create(path:string, content:SchemaKind):Promise<Asset> {
+    async create(path:string, content:SchemaKind):Promise<Asset[]> {
         const result = await fetch(clusterPath(`/assets/create`, {path}),{
             headers: {
                 'Content-Type': 'application/yaml'

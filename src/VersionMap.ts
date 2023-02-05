@@ -131,6 +131,11 @@ export class VersionMap<T extends SomeKind> {
         );
     }
 
+    listAll():T[] {
+        return Array.from(this.versions.values())
+            .flatMap((versions):T[] => Array.from(versions.values()));
+    }
+
     kinds():string[] {
         return Array.from(this.latestVersions.entries()).map(([name, version]) =>
             `${name}:${version}`

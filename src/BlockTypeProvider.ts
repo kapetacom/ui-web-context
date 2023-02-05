@@ -35,6 +35,10 @@ class BlockTypeProviderImpl {
         return this.blockTypeMap.list();
     }
 
+    listAll() {
+        return this.blockTypeMap.listAll();
+    }
+
     getVersionsFor(name:string) {
         return this.blockTypeMap.getVersionsFor(name);
     }

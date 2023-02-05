@@ -32,6 +32,13 @@ class BlockTargetProviderImpl {
         });
     }
 
+    listAll(blockKind:string) {
+        const [versionLessKind] = blockKind.split(':');
+        return this.targetMap.listAll().filter((target) => {
+            return containsIgnoreCase(target.blockKinds, versionLessKind);
+        });
+    }
+
     getVersionsFor(name:string) {
         return this.targetMap.getVersionsFor(name);
     }
