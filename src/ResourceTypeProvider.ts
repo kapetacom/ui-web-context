@@ -91,7 +91,6 @@ class ResourceTypeProviderImpl {
         return undefined;
     }
 
-    
     convertToConsumable(fromKind:ResourceKind):ResourceKind {
         const data = _.cloneDeep(fromKind);
         const targetConfig = this.get(fromKind.kind);
@@ -103,20 +102,27 @@ class ResourceTypeProviderImpl {
     }
 
     convertTo(fromKind:ResourceKind, targetKind:string):ResourceKind {
-        const parsedTargetKind = this.resourceTypeMap.parseKind(targetKind);
+        let parsedTargetKind = this.resourceTypeMap.parseKind(targetKind);
         const parsedFromKind = this.resourceTypeMap.parseKind(fromKind.kind);
+
+        if (parsedFromKind.version === 'local' &&
+            parsedTargetKind.version !== 'local' &&
+            this.get(`${parsedTargetKind.name}:local`)) {
+            //If we're converting a local version - and we've got the target kind as local
+            // - then also use local version for that
+            parsedTargetKind = this.resourceTypeMap.parseKind(`${parsedTargetKind.name}:local`);
+        }
 
         if (parsedFromKind.name === parsedTargetKind.name) {
             return {...fromKind};
         }
 
-        const converter = this.getConverterFor(fromKind.kind, parsedTargetKind.id);
+        const converter = this.getConverterFor(parsedFromKind.id, parsedTargetKind.id);
         if (!converter || !converter.createFrom) {
              return {...fromKind, kind: parsedTargetKind.id};
         }
 
         fromKind.kind = parsedTargetKind.id;
-        
         return converter.createFrom(fromKind);
     }
 }

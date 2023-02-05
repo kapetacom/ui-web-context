@@ -1,4 +1,5 @@
 import {EventEmitter} from "events";
+import SocketService from "./SocketService";
 
 import {
     Asset,
@@ -8,6 +9,20 @@ import {
 import {clusterPath} from "./ClusterConfig";
 import YAML from 'yaml';
 import {asSingleton} from "../utils";
+
+export interface AssetChangedEvent {
+    context:string
+    payload: {
+        eventType:string
+        asset: {
+            handle:string,
+            name:string,
+            version:string
+        }
+    }
+}
+
+export type AssetListener = (evt:AssetChangedEvent) => void
 
 export interface AssetStore {
     list: () => Promise<Asset[]>
@@ -71,6 +86,21 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
         this.emit('change');
     }
 
+    subscribe( handler:AssetListener) {
+
+        SocketService.joinRoom('assets');
+        SocketService.on('changed', handler);
+
+        return () => {
+            this.unsubscribe(handler);
+        };
+    }
+
+    unsubscribe(handler:AssetListener) {
+
+        SocketService.leaveRoom('assets');
+        SocketService.off('changed', handler);
+    }
 
 }
 

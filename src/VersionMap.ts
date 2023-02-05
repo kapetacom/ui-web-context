@@ -49,7 +49,7 @@ class Version {
 export interface ParsedKind {
     name:string
     version:string
-    get id():string
+    id:string
 }
 
 export class VersionMap<T extends SomeKind> {
@@ -64,9 +64,7 @@ export class VersionMap<T extends SomeKind> {
             return {
                 name: uri.fullName,
                 version: uri.version,
-                get id() {
-                    return `${uri.fullName}:${uri.version}`;
-                }
+                id: `${uri.fullName}:${uri.version}`
             };
         }
 
@@ -74,9 +72,7 @@ export class VersionMap<T extends SomeKind> {
         return {
             name: uri.fullName,
             version,
-            get id() {
-                return `${uri.fullName}:${version}`;
-            }
+            id: `${uri.fullName}:${version}`
         }
     }
 
