@@ -13,7 +13,16 @@ import {asSingleton} from "../utils";
 export interface AssetChangedEvent {
     context:string
     payload: {
-        eventType:string
+        type:string
+        definition: {
+            kind:string,
+            metadata: {
+                name:string
+                title?:string
+                description?:string
+            }
+            spec?: {[key:string]:any}
+        }
         asset: {
             handle:string,
             name:string,
@@ -86,6 +95,12 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
         this.emit('change');
     }
 
+    /**
+     * Subscribes to whenever providers with a web UI is added / removed (not blocks, plans etc)
+     * This is to allow the UI to react to such events.
+     *
+     * @param handler
+     */
     subscribe( handler:AssetListener) {
 
         SocketService.joinRoom('assets');
