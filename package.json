@@ -25,7 +25,7 @@
         "prepublishOnly": "npm run build"
     },
     "peerDependencies": {
-        "@blockware/ui-web-types": "<2",
+        "@blockware/ui-web-types": ">= 0.0.44 < 2",
         "@blockware/ui-web-utils": "<2",
         "lodash": ">=4",
         "react": ">=18",
@@ -35,7 +35,7 @@
     },
     "devDependencies": {
         "@blockware/nodejs-utils": "^0.0.2",
-        "@blockware/ui-web-types": "<2",
+        "@blockware/ui-web-types": ">= 0.0.44 < 2",
         "@blockware/ui-web-utils": "<2",
         "@rollup/plugin-commonjs": "^21.1.0",
         "@rollup/plugin-node-resolve": "^14.1.0",
