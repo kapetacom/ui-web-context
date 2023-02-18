@@ -88,80 +88,31 @@ class InstanceServiceImpl {
     }
 
     async getInstanceCurrentStatus() {
-        try {
-            const result = await simpleFetch(clusterPath(`/instances`), { method: "GET" });
-            return result.json();
-
-        } catch (error) {
-            console.log(error);
-            return error
-        }
+        return simpleFetch(clusterPath(`/instances`), { method: "GET" });
     }
 
     async getInstanceStatusForPlan(systemId) {
-        try {
-            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/instances`), { method: "GET" });
-            return result.json();
-
-        } catch (error) {
-            console.log(error);
-            return error
-        }
+        return simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/instances`), { method: "GET" });
     }
 
     async startInstances(systemId: string) {
-        try {
-            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/start`), { method: "POST" });
-            return result.json();
-
-        } catch (error) {
-            console.log(error);
-            return error
-        }
+        return simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/start`), { method: "POST" });
     }
 
     async stopInstances(systemId: string) {
-        try {
-            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/stop`), { method: "POST" });
-            return result.json();
-
-        } catch (error) {
-            console.log(error);
-            return error
-        }
+        return simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/stop`), { method: "POST" });
     }
 
     async startInstance(systemId: string, instanceId: string) {
-        try {
-            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/start`), { method: "POST" });
-            return result.json();
-
-        } catch (error) {
-            console.log(error);
-            return error
-        }
+        return simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/start`), { method: "POST" });
     }
 
     async stopInstance(systemId: string, instanceId: string) {
-        try {
-            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/stop`), { method: "POST" });
-            return result.json();
-
-        } catch (error) {
-            console.log(error);
-            return error
-        }
+        return simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/stop`), { method: "POST" });
     }
 
     async getInstanceLogs(systemId: string, instanceId: string) {
-        try {
-            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/logs`), { method: "GET" });
-            return result.json();
-
-        } catch (error) {
-            console.log(error);
-            return error
-        }
+        return simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/logs`), { method: "GET" });
     }
 }
 

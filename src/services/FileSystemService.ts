@@ -21,34 +21,29 @@ class FileSystemServiceImpl implements FileSystemStore {
     }
 
     async getHomeFolder():Promise<string> {
-            const result = await simpleFetch(clusterPath(`/files/root`));
-            return result.text();
+            return simpleFetch(clusterPath(`/files/root`));
     }
 
     async getProjectFolder():Promise<string> {
-        const result = await simpleFetch(clusterPath(`/files/project/root`));
-        return result.text();
+        return simpleFetch(clusterPath(`/files/project/root`));
     }
 
     async setProjectFolder(folder:string):Promise<string> {
-        const result = await simpleFetch(clusterPath(`/files/project/root`), {
+        return simpleFetch(clusterPath(`/files/project/root`), {
             headers: {
                 'Content-Type': 'text/plain'
             },
             body: folder,
             method: 'POST'
         });
-        return result.text();
     }
 
     async listFilesInFolder(path: string):Promise<FileInfo[]> {
-        const result = await simpleFetch(clusterPath(`/files/list`, {path}));
-        return result.json();
+        return simpleFetch(clusterPath(`/files/list`, {path}));
     }
 
     async readFile(path: string):Promise<string> {
-        const result = await simpleFetch(clusterPath(`/files/readfile`, {path}));
-        return result.text();
+        return simpleFetch(clusterPath(`/files/readfile`, {path}));
     }
 
     async writeFile(path: string, content:string):Promise<void> {

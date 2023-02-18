@@ -43,26 +43,24 @@ export interface AssetStore {
 
 class AssetServiceImpl extends EventEmitter implements AssetStore {
     async list():Promise<Asset[]> {
-        const result = await simpleFetch(clusterPath(`/assets/`));
-        return result.json();
+        return simpleFetch(clusterPath(`/assets/`));
     }
 
     async get(ref:string):Promise<Asset> {
-        const result = await simpleFetch(clusterPath(`/assets/read`, {ref}));
-        return result.json();
+        return simpleFetch(clusterPath(`/assets/read`, {ref}));
     }
 
     async import(ref:string):Promise<Asset[]> {
-        const result = await simpleFetch(clusterPath(`/assets/import`, {ref}),{
+        const out = await simpleFetch(clusterPath(`/assets/import`, {ref}),{
             method: 'PUT'
         });
 
         this.emit('change');
-        return result.json();
+        return out;
     }
 
     async create(path:string, content:SchemaKind):Promise<Asset[]> {
-        const result = await simpleFetch(clusterPath(`/assets/create`, {path}),{
+        const out = await simpleFetch(clusterPath(`/assets/create`, {path}),{
             headers: {
                 'Content-Type': 'application/yaml'
             },
@@ -70,21 +68,9 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
             method: 'POST'
         });
 
-        const data = await result.json();
-
-        if (!result.ok) {
-            if (result.status === 404) {
-                return null;
-            }
-
-            if (data?.error) {
-                throw new Error(data.error);
-            }
-        }
-
         this.emit('change');
 
-        return result.json();
+        return out;
     }
 
     async update(ref: string, content: SchemaKind) {
