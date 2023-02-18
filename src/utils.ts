@@ -40,8 +40,8 @@ export const handleResponse = async (response:Response) => {
         throw new Error(`Request failed - status: ${response.status}`);
     }
 
-    if (response.headers['content-type'] &&
-        response.headers['content-type'].toLowerCase().indexOf('json') > -1) {
+    if (response.headers.has('content-type') &&
+        response.headers.get('content-type').toLowerCase().indexOf('json') > -1) {
         return response.json();
     }
     return response.text();
