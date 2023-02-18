@@ -1,7 +1,7 @@
 import SocketService from "./SocketService";
 import { clusterPath } from "./ClusterConfig";
 import _ from "lodash";
-import {asSingleton} from "../utils";
+import {asSingleton, simpleFetch} from "../utils";
 
 export enum InstanceEventType {
     EVENT_INSTANCE_CHANGED = 'status-changed',
@@ -89,7 +89,7 @@ class InstanceServiceImpl {
 
     async getInstanceCurrentStatus() {
         try {
-            const result = await fetch(clusterPath(`/instances`), { method: "GET" });
+            const result = await simpleFetch(clusterPath(`/instances`), { method: "GET" });
             return result.json();
 
         } catch (error) {
@@ -100,7 +100,7 @@ class InstanceServiceImpl {
 
     async getInstanceStatusForPlan(systemId) {
         try {
-            const result = await fetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/instances`), { method: "GET" });
+            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/instances`), { method: "GET" });
             return result.json();
 
         } catch (error) {
@@ -111,7 +111,7 @@ class InstanceServiceImpl {
 
     async startInstances(systemId: string) {
         try {
-            const result = await fetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/start`), { method: "POST" });
+            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/start`), { method: "POST" });
             return result.json();
 
         } catch (error) {
@@ -122,7 +122,7 @@ class InstanceServiceImpl {
 
     async stopInstances(systemId: string) {
         try {
-            const result = await fetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/stop`), { method: "POST" });
+            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/stop`), { method: "POST" });
             return result.json();
 
         } catch (error) {
@@ -133,7 +133,7 @@ class InstanceServiceImpl {
 
     async startInstance(systemId: string, instanceId: string) {
         try {
-            const result = await fetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/start`), { method: "POST" });
+            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/start`), { method: "POST" });
             return result.json();
 
         } catch (error) {
@@ -144,7 +144,7 @@ class InstanceServiceImpl {
 
     async stopInstance(systemId: string, instanceId: string) {
         try {
-            const result = await fetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/stop`), { method: "POST" });
+            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/stop`), { method: "POST" });
             return result.json();
 
         } catch (error) {
@@ -155,7 +155,7 @@ class InstanceServiceImpl {
 
     async getInstanceLogs(systemId: string, instanceId: string) {
         try {
-            const result = await fetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/logs`), { method: "GET" });
+            const result = await simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/${encodeURIComponent(instanceId)}/logs`), { method: "GET" });
             return result.json();
 
         } catch (error) {
