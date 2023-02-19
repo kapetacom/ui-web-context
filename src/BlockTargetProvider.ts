@@ -33,6 +33,9 @@ class BlockTargetProviderImpl {
     }
 
     listAll(blockKind:string) {
+        if (!blockKind) {
+            return [];
+        }
         const [versionLessKind] = blockKind.split(':');
         return this.targetMap.listAll().filter((target) => {
             return containsIgnoreCase(target.blockKinds, versionLessKind);
