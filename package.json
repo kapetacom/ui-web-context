@@ -1,5 +1,5 @@
 {
-    "name": "@blockware/ui-web-context",
+    "name": "@kapeta/ui-web-context",
     "version": "0.0.48",
     "main": "dist/cjs/index.js",
     "module": "dist/esm/index.js",
@@ -9,13 +9,13 @@
         "package.json",
         "README.md"
     ],
-    "description": "Provides shared interface for interacting with blockware UI",
+    "description": "Provides shared interface for interacting with kapeta UI",
     "private": false,
     "publishConfig": {
         "access": "public"
     },
     "keywords": [
-        "blockware"
+        "kapeta"
     ],
     "license": "MIT",
     "scripts": {
@@ -25,8 +25,8 @@
         "prepublishOnly": "npm run build"
     },
     "peerDependencies": {
-        "@blockware/ui-web-types": ">= 0.0.44 < 2",
-        "@blockware/ui-web-utils": "<2",
+        "@kapeta/ui-web-types": ">= 0.0.44 < 2",
+        "@kapeta/ui-web-utils": "<2",
         "lodash": ">=4",
         "react": ">=18",
         "react-dom": ">=18",
@@ -34,9 +34,9 @@
         "yaml": ">=1"
     },
     "devDependencies": {
-        "@blockware/nodejs-utils": "^0.0.2",
-        "@blockware/ui-web-types": ">= 0.0.44 < 2",
-        "@blockware/ui-web-utils": "<2",
+        "@kapeta/nodejs-utils": "^0.0.3",
+        "@kapeta/ui-web-types": ">= 0.0.44 < 2",
+        "@kapeta/ui-web-utils": "<2",
         "@rollup/plugin-commonjs": "^21.1.0",
         "@rollup/plugin-node-resolve": "^14.1.0",
         "@rollup/plugin-typescript": "^8.5.0",
