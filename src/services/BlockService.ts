@@ -1,7 +1,7 @@
 import {AssetService} from './AssetService';
 import {BlockTypeProvider} from '../BlockTypeProvider';
 
-import {Asset, BlockKind} from "@blockware/ui-web-types";
+import {Asset, BlockKind} from "@kapeta/ui-web-types";
 import {asSingleton} from "../utils";
 
 

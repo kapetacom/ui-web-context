@@ -1,6 +1,6 @@
 import {asSingleton, simpleFetch} from "../utils";
 import { clusterPath } from "./ClusterConfig";
-import { Identity, MemberIdentity } from "@blockware/ui-web-types";
+import { Identity, MemberIdentity } from "@kapeta/ui-web-types";
 
 export interface IdentityStore {
   getCurrent(): Promise<Identity>;

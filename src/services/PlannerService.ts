@@ -1,4 +1,4 @@
-import {Asset, PLAN_KIND, PlanKind} from "@blockware/ui-web-types";
+import {Asset, PLAN_KIND, PlanKind} from "@kapeta/ui-web-types";
 
 import {AssetService} from "./AssetService";
 

@@ -1,4 +1,4 @@
-import {parseBlockwareUri} from '@blockware/nodejs-utils';
+import {parseBlockwareUri} from '@kapeta/nodejs-utils';
 
 interface SomeKind {
     kind:string

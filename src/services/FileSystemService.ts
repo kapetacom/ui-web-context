@@ -1,6 +1,6 @@
 import * as Path from "path";
 
-import {FileInfo} from "@blockware/ui-web-types";
+import {FileInfo} from "@kapeta/ui-web-types";
 import {clusterPath} from "./ClusterConfig";
 import {asSingleton, simpleFetch} from "../utils";
 

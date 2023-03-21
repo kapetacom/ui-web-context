@@ -1,5 +1,5 @@
 import SocketService from "./SocketService";
-import {Traffic} from "@blockware/ui-web-types";
+import {Traffic} from "@kapeta/ui-web-types";
 import {asSingleton} from "../utils";
 
 export enum TrafficEventType {

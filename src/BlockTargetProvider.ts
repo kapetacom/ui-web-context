@@ -1,4 +1,4 @@
-import {TargetConfig} from "@blockware/ui-web-types";
+import {TargetConfig} from "@kapeta/ui-web-types";
 import {VersionMap} from "./VersionMap";
 import {asSingleton} from "./utils";
 

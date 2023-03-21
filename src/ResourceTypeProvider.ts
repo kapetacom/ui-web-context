@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import {ResourceConfig, ResourceKind, ResourceConverter} from "@blockware/ui-web-types";
+import {ResourceConfig, ResourceKind, ResourceConverter} from "@kapeta/ui-web-types";
 import {VersionMap} from "./VersionMap";
 import {asSingleton} from "./utils";
 

@@ -4,7 +4,7 @@ import SocketService from "./SocketService";
 import {
     Asset,
     SchemaKind
-} from "@blockware/ui-web-types";
+} from "@kapeta/ui-web-types";
 
 import {clusterPath} from "./ClusterConfig";
 import YAML from 'yaml';

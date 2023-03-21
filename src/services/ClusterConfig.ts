@@ -1,10 +1,10 @@
-import {electronRemote, isElectron} from "@blockware/ui-web-utils";
+import {electronRemote, isElectron} from "@kapeta/ui-web-utils";
 
 let baseUrl;
 
 if (isElectron()) {
     //We're inside Electron
-    const localClusterConfig = electronRemote('@blockware/local-cluster-config');
+    const localClusterConfig = electronRemote('@kapeta/local-cluster-config');
     baseUrl = localClusterConfig.getClusterServiceAddress();
 } else if (typeof process !== 'undefined' && process.env) {
     //We're inside Node
