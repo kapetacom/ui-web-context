@@ -10,11 +10,11 @@ class SocketService {
     constructor() {
         this._enabled = true;
         if (typeof window !== 'undefined' &&
-            window['Blockware'] &&
-            window['Blockware']['config'] &&
-            window['Blockware']['config'].socket_enabled !== undefined) {
+            window['Kapeta'] &&
+            window['Kapeta']['config'] &&
+            window['Kapeta']['config'].socket_enabled !== undefined) {
             //We're inside a browser
-            this._enabled = window['Blockware']['config'].socket_enabled;
+            this._enabled = window['Kapeta']['config'].socket_enabled;
         }
 
         if (this._enabled) {

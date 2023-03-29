@@ -1,4 +1,4 @@
-import {parseBlockwareUri} from '@kapeta/nodejs-utils';
+import {parseKapetaUri} from '@kapeta/nodejs-utils';
 
 interface SomeKind {
     kind:string
@@ -59,7 +59,7 @@ export class VersionMap<T extends SomeKind> {
     private latestVersions = new Map<string, string>();
 
     public parseKind(kind:string):ParsedKind {
-        const uri = parseBlockwareUri(kind);
+        const uri = parseKapetaUri(kind);
         if (uri.version) {
             return {
                 name: uri.fullName,

@@ -10,11 +10,11 @@ if (isElectron()) {
     //We're inside Node
     baseUrl = process.env.REACT_APP_CLUSTER_SERVICE;
 } else if (typeof window !== 'undefined' &&
-    window['Blockware'] &&
-    window['Blockware']['config'] &&
-    window['Blockware']['config'].cluster_service) {
+    window['Kapeta'] &&
+    window['Kapeta']['config'] &&
+    window['Kapeta']['config'].cluster_service) {
     //We're inside a browser
-    baseUrl = window['Blockware']['config'].cluster_service;
+    baseUrl = window['Kapeta']['config'].cluster_service;
 }
 
 export const CLUSTER_SERVICE_BASEURL = baseUrl ? baseUrl : "http://localhost:35100";
