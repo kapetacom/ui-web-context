@@ -1,16 +1,17 @@
-import {Asset, PLAN_KIND, PlanKind} from "@kapeta/ui-web-types";
+import {Plan} from "@kapeta/schemas";
+import {Asset} from "@kapeta/ui-web-types";
 
 import {AssetService} from "./AssetService";
 
 export const PlannerService = {
-    async list(): Promise<Asset<PlanKind>[]> {
+    async list(): Promise<Asset<Plan>[]> {
         const assets = await AssetService.list();
         return assets.filter((asset) => {
             return asset.exists &&
-                asset.kind.toLowerCase() === PLAN_KIND.toLowerCase();
+                asset.kind.toLowerCase() === 'core/plan'.toLowerCase();
         });
     },
-    async get(ref: string): Promise<Asset<PlanKind>> {
+    async get(ref: string): Promise<Asset<Plan>> {
         return AssetService.get(ref);
     }
 

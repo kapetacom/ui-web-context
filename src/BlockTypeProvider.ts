@@ -1,12 +1,12 @@
-import {BlockConfig} from "@kapeta/ui-web-types";
+import {IBlockTypeProvider} from "@kapeta/ui-web-types";
 import {VersionMap} from "./VersionMap";
 import {asSingleton} from "./utils";
 
 class BlockTypeProviderImpl {
 
-    private blockTypeMap = new VersionMap<BlockConfig>();
+    private blockTypeMap = new VersionMap<IBlockTypeProvider>();
 
-    private defaultKind?:string;
+    private defaultKind?: string;
 
     get(key: string) {
         const config = this.blockTypeMap.get(key.toLowerCase())
@@ -16,7 +16,7 @@ class BlockTypeProviderImpl {
         return config;
     }
 
-    getDefaultKind():string {
+    getDefaultKind(): string {
         if (!this.defaultKind) {
             throw new Error('Default block kind not defined');
         }
@@ -27,7 +27,7 @@ class BlockTypeProviderImpl {
         return this.blockTypeMap.kinds();
     }
 
-    exists(kind:string) {
+    exists(kind: string) {
         return this.blockTypeMap.exists(kind);
     }
 
@@ -39,11 +39,11 @@ class BlockTypeProviderImpl {
         return this.blockTypeMap.listAll();
     }
 
-    getVersionsFor(name:string) {
+    getVersionsFor(name: string) {
         return this.blockTypeMap.getVersionsFor(name);
     }
 
-    register(component: BlockConfig) {
+    register(component: IBlockTypeProvider) {
         let kind = component.kind.toLowerCase();
         this.blockTypeMap.add(component);
 

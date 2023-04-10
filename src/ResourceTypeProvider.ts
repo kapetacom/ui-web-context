@@ -1,12 +1,13 @@
 import * as _ from 'lodash';
 
-import {ResourceConfig, ResourceKind, ResourceConverter} from "@kapeta/ui-web-types";
+import {IResourceTypeProvider, IResourceTypeConverter} from "@kapeta/ui-web-types";
+import {Resource} from "@kapeta/schemas";
 import {VersionMap} from "./VersionMap";
 import {asSingleton} from "./utils";
 
 class ResourceTypeProviderImpl {
 
-    private resourceTypeMap = new VersionMap<ResourceConfig>();
+    private resourceTypeMap = new VersionMap<IResourceTypeProvider>();
 
     get(key: string) {
         const config = this.resourceTypeMap.get(key);
@@ -36,7 +37,7 @@ class ResourceTypeProviderImpl {
         return this.resourceTypeMap.exists(kind);
     }
 
-    register(component: ResourceConfig) {
+    register(component: IResourceTypeProvider) {
         this.resourceTypeMap.add(component);
     }
 
@@ -57,7 +58,7 @@ class ResourceTypeProviderImpl {
         return false;
     }
 
-    renameEntityReferences(resource: ResourceKind, from:string, to:string):void {
+    renameEntityReferences(resource: Resource, from:string, to:string):void {
         const resourceConfig = this.get(resource.kind);
 
         if (!resourceConfig.renameEntityReferences) {
@@ -67,7 +68,7 @@ class ResourceTypeProviderImpl {
         resourceConfig.renameEntityReferences(resource, from, to);
     }
 
-    resolveEntities(resource: ResourceKind):string[] {
+    resolveEntities(resource: Resource):string[] {
         const resourceConfig = this.get(resource.kind);
 
         if (!resourceConfig.resolveEntities) {
@@ -79,7 +80,7 @@ class ResourceTypeProviderImpl {
         return _.uniq(usedEntityNames);
     }
 
-    getConverterFor(resourceKind:string, targetKind:string):ResourceConverter|undefined {
+    getConverterFor(resourceKind:string, targetKind:string):IResourceTypeConverter|undefined {
         const parsedTargetKind = this.resourceTypeMap.parseKind(targetKind);
         const parsedResourceKind = this.resourceTypeMap.parseKind(resourceKind);
         const targetConfig = this.get(parsedTargetKind.id);
@@ -91,7 +92,7 @@ class ResourceTypeProviderImpl {
         return undefined;
     }
 
-    convertToConsumable(fromKind:ResourceKind):ResourceKind {
+    convertToConsumable(fromKind:Resource):Resource {
         const data = _.cloneDeep(fromKind);
         const targetConfig = this.get(fromKind.kind);
         if (!targetConfig.consumableKind) {
@@ -101,7 +102,7 @@ class ResourceTypeProviderImpl {
         return this.convertTo(data, targetConfig.consumableKind);
     }
 
-    convertTo(fromKind:ResourceKind, targetKind:string):ResourceKind {
+    convertTo(fromKind:Resource, targetKind:string):Resource {
         let parsedTargetKind = this.resourceTypeMap.parseKind(targetKind);
         const parsedFromKind = this.resourceTypeMap.parseKind(fromKind.kind);
 
