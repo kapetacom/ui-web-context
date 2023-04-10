@@ -14,15 +14,7 @@ export interface AssetChangedEvent {
     context:string
     payload: {
         type:string
-        definition: {
-            kind:string,
-            metadata: {
-                name:string
-                title?:string
-                description?:string
-            }
-            spec?: {[key:string]:any}
-        }
+        definition: SchemaKind
         asset: {
             handle:string,
             name:string,

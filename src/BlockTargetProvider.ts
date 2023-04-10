@@ -1,4 +1,4 @@
-import {TargetConfig} from "@kapeta/ui-web-types";
+import {ILanguageTargetProvider} from "@kapeta/ui-web-types";
 import {VersionMap} from "./VersionMap";
 import {asSingleton} from "./utils";
 
@@ -8,9 +8,9 @@ function containsIgnoreCase(list:string[], key:string) {
 
 class BlockTargetProviderImpl {
 
-    private targetMap = new VersionMap<TargetConfig>();
+    private targetMap = new VersionMap<ILanguageTargetProvider>();
 
-    get(key: string, blockKind:string):TargetConfig {
+    get(key: string, blockKind:string):ILanguageTargetProvider {
         let targetConfig = this.targetMap.get(key.toLowerCase());
         if (!targetConfig) {
             throw new Error(`Target named ${key} not found.`);
@@ -57,7 +57,7 @@ class BlockTargetProviderImpl {
         return this.targetMap.exists(kind);
     }
 
-    register(target: TargetConfig) {
+    register(target: ILanguageTargetProvider) {
         this.targetMap.add(target);
     }
 

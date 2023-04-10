@@ -35,6 +35,7 @@
     },
     "devDependencies": {
         "@kapeta/nodejs-utils": "<2",
+        "@kapeta/schemas": "^0.0.24",
         "@kapeta/ui-web-types": "<2",
         "@kapeta/ui-web-utils": "<2",
         "@rollup/plugin-commonjs": "^21.1.0",
