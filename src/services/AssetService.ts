@@ -1,5 +1,5 @@
 import {EventEmitter} from "events";
-import SocketService from "./SocketService";
+import {SocketService} from "./SocketService";
 
 import {
     Asset,

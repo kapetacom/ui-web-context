@@ -1,4 +1,4 @@
-import SocketService from "./SocketService";
+import {SocketService} from "./SocketService";
 import { clusterPath } from "./ClusterConfig";
 import _ from "lodash";
 import {asSingleton, simpleFetch} from "../utils";

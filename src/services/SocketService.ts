@@ -3,7 +3,7 @@ import {Socket, io} from "socket.io-client";
 import { socketPath } from "./ClusterConfig";
 import {asSingleton} from "../utils";
 
-class SocketService {
+class SocketServiceImpl {
     private readonly _socket: Socket;
     private readonly _enabled: boolean;
 
@@ -43,4 +43,4 @@ class SocketService {
     }
 }
 
-export default asSingleton('SocketService', new SocketService());
+export const SocketService = asSingleton('SocketService', new SocketServiceImpl());

@@ -11,5 +11,4 @@ export * from './services/InstanceService';
 export * from './services/PlannerService';
 export * from './services/SocketService';
 export * from './services/TrafficService';
-export * from './services/SocketService';
 export * from './utils';

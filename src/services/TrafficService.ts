@@ -1,4 +1,4 @@
-import SocketService from "./SocketService";
+import {SocketService} from "./SocketService";
 import {Traffic} from "@kapeta/ui-web-types";
 import {asSingleton} from "../utils";
 
