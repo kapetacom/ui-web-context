@@ -13,21 +13,21 @@ export const asSingleton = <T>(id: string, instance: T): T => {
     if (!global.$$singletons) {
         global.$$singletons = {};
     }
-    
+
     if (!global.$$singletons[id]) {
         global.$$singletons[id] = instance;
     }
 
     return global.$$singletons[id];
-}
+};
 
 export const simpleFetch = async (input: RequestInfo | URL, init?: RequestInit) => {
     const response = await fetch(input, init);
 
     return handleResponse(response);
-}
+};
 
-export const handleResponse = async (response:Response) => {
+export const handleResponse = async (response: Response) => {
     if (!response.ok) {
         if (response.status === 404) {
             return null;
@@ -40,9 +40,11 @@ export const handleResponse = async (response:Response) => {
         throw new Error(`Request failed - status: ${response.status}`);
     }
 
-    if (response.headers.has('content-type') &&
-        response.headers.get('content-type').toLowerCase().indexOf('json') > -1) {
+    if (
+        response.headers.has('content-type') &&
+        response.headers.get('content-type').toLowerCase().indexOf('json') > -1
+    ) {
         return response.json();
     }
     return response.text();
-}
+};

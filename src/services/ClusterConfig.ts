@@ -1,4 +1,4 @@
-import {electronRemote, isElectron} from "@kapeta/ui-web-utils";
+import { electronRemote, isElectron } from '@kapeta/ui-web-utils';
 
 let baseUrl;
 
@@ -9,23 +9,25 @@ if (isElectron()) {
 } else if (typeof process !== 'undefined' && process.env) {
     //We're inside Node
     baseUrl = process.env.REACT_APP_CLUSTER_SERVICE;
-} else if (typeof window !== 'undefined' &&
+} else if (
+    typeof window !== 'undefined' &&
     window['Kapeta'] &&
     window['Kapeta']['config'] &&
-    window['Kapeta']['config'].cluster_service) {
+    window['Kapeta']['config'].cluster_service
+) {
     //We're inside a browser
     baseUrl = window['Kapeta']['config'].cluster_service;
 }
 
-export const CLUSTER_SERVICE_BASEURL = baseUrl ? baseUrl : "http://localhost:35100";
+export const CLUSTER_SERVICE_BASEURL = baseUrl ? baseUrl : 'http://localhost:35100';
 
-export function clusterPath(path:string, query?:{[key:string]:string}) {
+export function clusterPath(path: string, query?: { [key: string]: string }) {
     if (!path.startsWith('/')) {
         path = '/' + path;
     }
 
     let base = CLUSTER_SERVICE_BASEURL;
-    if (base.endsWith('/') ) {
+    if (base.endsWith('/')) {
         base = base.substring(0, base.length - 1);
     }
 
@@ -38,6 +40,6 @@ export function clusterPath(path:string, query?:{[key:string]:string}) {
     return url;
 }
 
-export function socketPath(){
+export function socketPath() {
     return CLUSTER_SERVICE_BASEURL;
 }

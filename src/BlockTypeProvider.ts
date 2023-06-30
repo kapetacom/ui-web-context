@@ -1,15 +1,14 @@
-import {IBlockTypeProvider} from "@kapeta/ui-web-types";
-import {VersionMap} from "./VersionMap";
-import {asSingleton} from "./utils";
+import { IBlockTypeProvider } from '@kapeta/ui-web-types';
+import { VersionMap } from './VersionMap';
+import { asSingleton } from './utils';
 
 class BlockTypeProviderImpl {
-
     private blockTypeMap = new VersionMap<IBlockTypeProvider>();
 
     private defaultKind?: string;
 
     get(key: string) {
-        const config = this.blockTypeMap.get(key.toLowerCase())
+        const config = this.blockTypeMap.get(key.toLowerCase());
         if (!config) {
             throw new Error(`Block type with kind ${key} not found.`);
         }
@@ -52,7 +51,6 @@ class BlockTypeProviderImpl {
             this.defaultKind = `${kind}:${this.blockTypeMap.getLatestVersion(kind)}`;
         }
     }
-
 }
 
 export const BlockTypeProvider = asSingleton('BlockTypeProvider', new BlockTypeProviderImpl());

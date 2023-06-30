@@ -1,22 +1,22 @@
-import {parseKapetaUri} from '@kapeta/nodejs-utils';
+import { parseKapetaUri } from '@kapeta/nodejs-utils';
 
 interface SomeKind {
-    kind:string
-    version:string
+    kind: string;
+    version: string;
 }
 
 class Version {
-    public readonly name?: string
-    public readonly major?: number
-    public readonly minor?: number
-    public readonly patch?: number
-    public readonly semver: boolean
+    public readonly name?: string;
+    public readonly major?: number;
+    public readonly minor?: number;
+    public readonly patch?: number;
+    public readonly semver: boolean;
 
     constructor(version) {
         if (/^\d+\.\d+\.\d+$/.test(version)) {
             //Semantic version
             this.semver = true;
-            const [major, minor, patch] = version.split(/\./g).map(num => parseInt(num));
+            const [major, minor, patch] = version.split(/\./g).map((num) => parseInt(num));
 
             this.major = major;
             this.minor = minor;
@@ -27,9 +27,8 @@ class Version {
         }
     }
 
-    isBiggerThan(other:Version) {
-        if (!this.semver ||
-            !other.semver) {
+    isBiggerThan(other: Version) {
+        if (!this.semver || !other.semver) {
             return false;
         }
 
@@ -43,28 +42,26 @@ class Version {
 
         return this.patch > other.patch;
     }
-
 }
 
 export interface ParsedKind {
-    name:string
-    version:string
-    id:string
+    name: string;
+    version: string;
+    id: string;
 }
 
 export class VersionMap<T extends SomeKind> {
-
     private versions = new Map<string, Map<string, T>>();
 
     private latestVersions = new Map<string, string>();
 
-    public parseKind(kind:string):ParsedKind {
+    public parseKind(kind: string): ParsedKind {
         const uri = parseKapetaUri(kind);
         if (uri.version) {
             return {
                 name: uri.fullName,
                 version: uri.version,
-                id: `${uri.fullName}:${uri.version}`
+                id: `${uri.fullName}:${uri.version}`,
             };
         }
 
@@ -72,11 +69,11 @@ export class VersionMap<T extends SomeKind> {
         return {
             name: uri.fullName,
             version,
-            id: `${uri.fullName}:${version}`
-        }
+            id: `${uri.fullName}:${version}`,
+        };
     }
 
-    get(kind: string):T {
+    get(kind: string): T {
         let parsedKind = this.parseKind(kind);
         if (!this.versions.has(parsedKind.name)) {
             return null;
@@ -85,12 +82,12 @@ export class VersionMap<T extends SomeKind> {
         return this.versions.get(parsedKind.name).get(parsedKind.version);
     }
 
-    getLatestVersion(kind:string):string {
+    getLatestVersion(kind: string): string {
         let parsedKind = this.parseKind(kind);
         return this.latestVersions.get(parsedKind.name);
     }
 
-    getLatest(kind:string):T {
+    getLatest(kind: string): T {
         let parsedKind = this.parseKind(kind);
         let version = this.latestVersions.get(parsedKind.name);
         if (!version) {
@@ -99,14 +96,14 @@ export class VersionMap<T extends SomeKind> {
         return this.versions.get(parsedKind.name).get(version);
     }
 
-    getVersionsFor(name:string):string[] {
+    getVersionsFor(name: string): string[] {
         if (!this.versions.has(name)) {
             return [];
         }
 
         const out = Array.from(this.versions.get(name).keys());
 
-        out.sort((a,b) => {
+        out.sort((a, b) => {
             if (a === b) {
                 return 0;
             }
@@ -121,24 +118,19 @@ export class VersionMap<T extends SomeKind> {
         return out;
     }
 
-    list():T[] {
-        return Array.from(this.latestVersions.entries()).map(([name, version]) =>
-            this.get(`${name}:${version}`)
-        );
+    list(): T[] {
+        return Array.from(this.latestVersions.entries()).map(([name, version]) => this.get(`${name}:${version}`));
     }
 
-    listAll():T[] {
-        return Array.from(this.versions.values())
-            .flatMap((versions):T[] => Array.from(versions.values()));
+    listAll(): T[] {
+        return Array.from(this.versions.values()).flatMap((versions): T[] => Array.from(versions.values()));
     }
 
-    kinds():string[] {
-        return Array.from(this.latestVersions.entries()).map(([name, version]) =>
-            `${name}:${version}`
-        );
+    kinds(): string[] {
+        return Array.from(this.latestVersions.entries()).map(([name, version]) => `${name}:${version}`);
     }
 
-    exists(kind:string):boolean {
+    exists(kind: string): boolean {
         const parsedKind = this.parseKind(kind);
         if (!this.versions.has(parsedKind.name)) {
             return false;
@@ -147,7 +139,7 @@ export class VersionMap<T extends SomeKind> {
         return this.versions.get(parsedKind.name).has(parsedKind.version);
     }
 
-    add(entity: T):void {
+    add(entity: T): void {
         const kind = entity.kind.toLowerCase();
         if (!this.versions.has(kind)) {
             this.versions.set(kind, new Map<string, T>());
@@ -165,5 +157,4 @@ export class VersionMap<T extends SomeKind> {
             this.latestVersions.set(kind, entity.version);
         }
     }
-
 }
