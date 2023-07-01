@@ -1,7 +1,6 @@
-
-import {Socket, io} from "socket.io-client";
-import { socketPath } from "./ClusterConfig";
-import {asSingleton} from "../utils";
+import { Socket, io } from 'socket.io-client';
+import { socketPath } from './ClusterConfig';
+import { asSingleton } from '../utils';
 
 class SocketServiceImpl {
     private readonly _socket: Socket;
@@ -9,10 +8,12 @@ class SocketServiceImpl {
 
     constructor() {
         this._enabled = true;
-        if (typeof window !== 'undefined' &&
+        if (
+            typeof window !== 'undefined' &&
             window['Kapeta'] &&
             window['Kapeta']['config'] &&
-            window['Kapeta']['config'].socket_enabled !== undefined) {
+            window['Kapeta']['config'].socket_enabled !== undefined
+        ) {
             //We're inside a browser
             this._enabled = window['Kapeta']['config'].socket_enabled;
         }
@@ -23,23 +24,19 @@ class SocketServiceImpl {
     }
 
     joinRoom(roomId: string) {
-        this._socket &&
-        this._socket.emit("join", roomId)
+        this._socket && this._socket.emit('join', roomId);
     }
 
     leaveRoom(roomId: string) {
-        this._socket &&
-        this._socket.emit("leave", roomId)
+        this._socket && this._socket.emit('leave', roomId);
     }
 
-    on(eventType:string, handler:any) {
-        this._socket &&
-        this._socket.on(eventType, handler);
+    on(eventType: string, handler: any) {
+        this._socket && this._socket.on(eventType, handler);
     }
 
-    off(eventType:string, handler:any) {
-        this._socket &&
-        this._socket.off(eventType, handler);
+    off(eventType: string, handler: any) {
+        this._socket && this._socket.off(eventType, handler);
     }
 }
 

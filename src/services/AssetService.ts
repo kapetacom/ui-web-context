@@ -1,63 +1,60 @@
-import {EventEmitter} from "events";
-import {SocketService} from "./SocketService";
+import { EventEmitter } from 'events';
+import { SocketService } from './SocketService';
 
-import {
-    Asset,
-    SchemaKind
-} from "@kapeta/ui-web-types";
+import { Asset, SchemaKind } from '@kapeta/ui-web-types';
 
-import {clusterPath} from "./ClusterConfig";
+import { clusterPath } from './ClusterConfig';
 import YAML from 'yaml';
-import {asSingleton, simpleFetch} from "../utils";
+import { asSingleton, simpleFetch } from '../utils';
 
 export interface AssetChangedEvent {
-    context:string
+    context: string;
     payload: {
-        type:string
-        definition: SchemaKind
+        type: string;
+        definition: SchemaKind;
         asset: {
-            handle:string,
-            name:string,
-            version:string
-        }
-    }
+            handle: string;
+            name: string;
+            version: string;
+        };
+    };
 }
 
-export type AssetListener = (evt:AssetChangedEvent) => void
+export type AssetListener = (evt: AssetChangedEvent) => void;
 
 export interface AssetStore {
-    list: () => Promise<Asset[]>
-    get: (ref:string) => Promise<Asset>;
-    import: (ref:string) => Promise<Asset[]>
-    create: (path:string, content:SchemaKind) => Promise<Asset[]>
-    remove: (ref:string) => Promise<void>
+    list: () => Promise<Asset[]>;
+    get: (ref: string) => Promise<Asset>;
+    import: (ref: string) => Promise<Asset[]>;
+    create: (path: string, content: SchemaKind) => Promise<Asset[]>;
+    remove: (ref: string) => Promise<void>;
 }
 
 class AssetServiceImpl extends EventEmitter implements AssetStore {
-    async list():Promise<Asset[]> {
+    async list(): Promise<Asset[]> {
         return simpleFetch(clusterPath(`/assets/`));
     }
 
-    async get(ref:string):Promise<Asset> {
-        return simpleFetch(clusterPath(`/assets/read`, {ref}));
+    async get(ref: string): Promise<Asset> {
+        return simpleFetch(clusterPath(`/assets/read`, { ref }));
     }
 
-    async import(ref:string):Promise<Asset[]> {
-        const out = await simpleFetch(clusterPath(`/assets/import`, {ref}),{
-            method: 'PUT'
+    async import(ref: string): Promise<Asset[]> {
+        const out = await simpleFetch(clusterPath(`/assets/import`, { ref }), {
+            method: 'PUT',
         });
 
         this.emit('change');
         return out;
     }
 
-    async create(path:string, content:SchemaKind):Promise<Asset[]> {
-        const out = await simpleFetch(clusterPath(`/assets/create`, {path}),{
+    async create(path: string, content: SchemaKind): Promise<Asset[]> {
+        const out = await simpleFetch(clusterPath(`/assets/create`, { path }), {
             headers: {
-                'Content-Type': 'application/yaml'
+                'Content-Type': 'application/yaml',
             },
             body: YAML.stringify(content),
-            method: 'POST'
+            method: 'POST',
         });
 
         this.emit('change');
@@ -66,20 +63,20 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
     }
 
     async update(ref: string, content: SchemaKind) {
-        await simpleFetch(clusterPath(`/assets/update`, {ref}),{
+        await simpleFetch(clusterPath(`/assets/update`, { ref }), {
             headers: {
-                'Content-Type': 'application/yaml'
+                'Content-Type': 'application/yaml',
             },
             body: YAML.stringify(content),
-            method: 'PUT'
+            method: 'PUT',
         });
 
         this.emit('change');
     }
 
-    async remove(ref:string):Promise<void> {
-        await simpleFetch(clusterPath(`/assets/`, {ref}),{
-            method: 'DELETE'
+    async remove(ref: string): Promise<void> {
+        await simpleFetch(clusterPath(`/assets/`, { ref }), {
+            method: 'DELETE',
         });
 
         this.emit('change');
@@ -91,8 +88,7 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
      *
      * @param handler
      */
-    subscribe( handler:AssetListener) {
-
+    subscribe(handler: AssetListener) {
         SocketService.joinRoom('assets');
         SocketService.on('changed', handler);
 
@@ -101,12 +97,10 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
         };
     }
 
-    unsubscribe(handler:AssetListener) {
-
+    unsubscribe(handler: AssetListener) {
         SocketService.leaveRoom('assets');
         SocketService.off('changed', handler);
     }
-
 }
 
 export const AssetService = asSingleton('AssetService', new AssetServiceImpl());

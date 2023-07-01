@@ -1,12 +1,11 @@
 import * as _ from 'lodash';
 
-import {IResourceTypeProvider, IResourceTypeConverter} from "@kapeta/ui-web-types";
-import {Resource} from "@kapeta/schemas";
-import {VersionMap} from "./VersionMap";
-import {asSingleton} from "./utils";
+import { IResourceTypeProvider, IResourceTypeConverter } from '@kapeta/ui-web-types';
+import { Resource } from '@kapeta/schemas';
+import { VersionMap } from './VersionMap';
+import { asSingleton } from './utils';
 
 class ResourceTypeProviderImpl {
-
     private resourceTypeMap = new VersionMap<IResourceTypeProvider>();
 
     get(key: string) {
@@ -25,7 +24,7 @@ class ResourceTypeProviderImpl {
         return this.resourceTypeMap.listAll();
     }
 
-    getVersionsFor(name:string) {
+    getVersionsFor(name: string) {
         return this.resourceTypeMap.getVersionsFor(name);
     }
 
@@ -33,7 +32,7 @@ class ResourceTypeProviderImpl {
         return this.resourceTypeMap.kinds();
     }
 
-    exists(kind:string) {
+    exists(kind: string) {
         return this.resourceTypeMap.exists(kind);
     }
 
@@ -41,7 +40,7 @@ class ResourceTypeProviderImpl {
         this.resourceTypeMap.add(component);
     }
 
-    canApplyResourceToKind(resourceKind:string, targetKind:string) {
+    canApplyResourceToKind(resourceKind: string, targetKind: string) {
         if (resourceKind === targetKind) {
             return true;
         }
@@ -50,15 +49,14 @@ class ResourceTypeProviderImpl {
 
         const parsedResourceKind = this.resourceTypeMap.parseKind(resourceKind);
 
-        if (targetConfig.converters && 
-            _.find(targetConfig.converters, {fromKind: parsedResourceKind.name})) {
+        if (targetConfig.converters && _.find(targetConfig.converters, { fromKind: parsedResourceKind.name })) {
             return true;
         }
 
         return false;
     }
 
-    renameEntityReferences(resource: Resource, from:string, to:string):void {
+    renameEntityReferences(resource: Resource, from: string, to: string): void {
         const resourceConfig = this.get(resource.kind);
 
         if (!resourceConfig.renameEntityReferences) {
@@ -68,7 +66,7 @@ class ResourceTypeProviderImpl {
         resourceConfig.renameEntityReferences(resource, from, to);
     }
 
-    resolveEntities(resource: Resource):string[] {
+    resolveEntities(resource: Resource): string[] {
         const resourceConfig = this.get(resource.kind);
 
         if (!resourceConfig.resolveEntities) {
@@ -80,19 +78,19 @@ class ResourceTypeProviderImpl {
         return _.uniq(usedEntityNames);
     }
 
-    getConverterFor(resourceKind:string, targetKind:string):IResourceTypeConverter|undefined {
+    getConverterFor(resourceKind: string, targetKind: string): IResourceTypeConverter | undefined {
         const parsedTargetKind = this.resourceTypeMap.parseKind(targetKind);
         const parsedResourceKind = this.resourceTypeMap.parseKind(resourceKind);
         const targetConfig = this.get(parsedTargetKind.id);
 
         if (targetConfig.converters) {
-            return _.find(targetConfig.converters, {fromKind: parsedResourceKind.name});
+            return _.find(targetConfig.converters, { fromKind: parsedResourceKind.name });
         }
 
         return undefined;
     }
 
-    convertToConsumable(fromKind:Resource):Resource {
+    convertToConsumable(fromKind: Resource): Resource {
         const data = _.cloneDeep(fromKind);
         const targetConfig = this.get(fromKind.kind);
         if (!targetConfig.consumableKind) {
@@ -102,25 +100,27 @@ class ResourceTypeProviderImpl {
         return this.convertTo(data, targetConfig.consumableKind);
     }
 
-    convertTo(fromKind:Resource, targetKind:string):Resource {
+    convertTo(fromKind: Resource, targetKind: string): Resource {
         let parsedTargetKind = this.resourceTypeMap.parseKind(targetKind);
         const parsedFromKind = this.resourceTypeMap.parseKind(fromKind.kind);
 
-        if (parsedFromKind.version === 'local' &&
+        if (
+            parsedFromKind.version === 'local' &&
             parsedTargetKind.version !== 'local' &&
-            this.get(`${parsedTargetKind.name}:local`)) {
+            this.get(`${parsedTargetKind.name}:local`)
+        ) {
             //If we're converting a local version - and we've got the target kind as local
             // - then also use local version for that
             parsedTargetKind = this.resourceTypeMap.parseKind(`${parsedTargetKind.name}:local`);
         }
 
         if (parsedFromKind.name === parsedTargetKind.name) {
-            return {...fromKind};
+            return { ...fromKind };
         }
 
         const converter = this.getConverterFor(parsedFromKind.id, parsedTargetKind.id);
         if (!converter || !converter.createFrom) {
-             return {...fromKind, kind: parsedTargetKind.id};
+            return { ...fromKind, kind: parsedTargetKind.id };
         }
 
         fromKind.kind = parsedTargetKind.id;
