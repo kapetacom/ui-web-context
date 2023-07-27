@@ -5,6 +5,7 @@ import { asSingleton } from '../utils';
 class SocketServiceImpl {
     private readonly _socket: Socket;
     private readonly _enabled: boolean;
+    private readonly _rooms: Set<string> = new Set<string>();
 
     constructor() {
         this._enabled = true;
@@ -19,16 +20,37 @@ class SocketServiceImpl {
         }
 
         if (this._enabled) {
-            this._socket = io(socketPath());
+            this._socket = io(socketPath(), {
+                autoConnect: true,
+                reconnection: true,
+                reconnectionAttempts: Infinity,
+                reconnectionDelay: 1000,
+                retries: Infinity,
+                transports: [ "websocket" ]
+            });
+
+            console.log('Connecting to socket: %s', socketPath());
+            this._socket.on('reconnect', () => {
+                console.log('Reconnected to socket server...');
+                this._rooms.forEach((roomId) => {
+                    this.emitJoinRoom(roomId);
+                })
+            });
         }
     }
 
-    joinRoom(roomId: string) {
+    private emitJoinRoom(roomId: string) {
         this._socket && this._socket.emit('join', roomId);
+    }
+
+    joinRoom(roomId: string) {
+        this.emitJoinRoom(roomId);
+        this._rooms.add(roomId);
     }
 
     leaveRoom(roomId: string) {
         this._socket && this._socket.emit('leave', roomId);
+        this._rooms.delete(roomId);
     }
 
     on(eventType: string, handler: any) {
