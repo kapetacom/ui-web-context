@@ -23,7 +23,8 @@
         "prebuild": "rm -rf dist",
         "build": "rollup -c",
         "prepublishOnly": "npm run build",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "test": "echo \"Error: no tests\""
     },
     "peerDependencies": {
         "@kapeta/ui-web-types": "<2",
