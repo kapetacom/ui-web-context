@@ -25,7 +25,6 @@ class SocketServiceImpl {
                 reconnection: true,
                 reconnectionAttempts: Infinity,
                 reconnectionDelay: 1000,
-                retries: Infinity,
                 transports: [ "websocket" ]
             });
 
