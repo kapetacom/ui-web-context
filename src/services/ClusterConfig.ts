@@ -1,11 +1,9 @@
-import { electronRemote, isElectron } from '@kapeta/ui-web-utils';
-
 let baseUrl;
 
-if (isElectron()) {
-    //We're inside Electron
-    const localClusterConfig = electronRemote('@kapeta/local-cluster-config');
-    baseUrl = localClusterConfig.getClusterServiceAddress();
+if (typeof window !== 'undefined' &&
+    window['KapetaDesktop']?.cluster_service?.url) {
+    //We're inside the desktop app
+    baseUrl = window['KapetaDesktop']?.cluster_service?.url
 } else if (typeof process !== 'undefined' && process.env) {
     //We're inside Node
     baseUrl = process.env.REACT_APP_CLUSTER_SERVICE;
