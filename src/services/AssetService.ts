@@ -1,11 +1,11 @@
-import { EventEmitter } from 'events';
-import { SocketService } from './SocketService';
+import {EventEmitter} from 'events';
+import {SocketService} from './SocketService';
 
-import { Asset, SchemaKind } from '@kapeta/ui-web-types';
+import {Asset, SchemaKind} from '@kapeta/ui-web-types';
 
-import { clusterPath } from './ClusterConfig';
+import {clusterPath} from './ClusterConfig';
 import YAML from 'yaml';
-import { asSingleton, simpleFetch } from '../utils';
+import {asSingleton, simpleFetch} from '../utils';
 
 export interface AssetChangedEvent {
     context: string;
@@ -24,7 +24,7 @@ export type AssetListener = (evt: AssetChangedEvent) => void;
 
 export interface AssetStore {
     list: () => Promise<Asset[]>;
-    get: (ref: string) => Promise<Asset>;
+    get: (ref: string, ensure: boolean) => Promise<Asset>;
     import: (ref: string) => Promise<Asset[]>;
     create: (path: string, content: SchemaKind) => Promise<Asset[]>;
     remove: (ref: string) => Promise<void>;
@@ -35,12 +35,12 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
         return simpleFetch(clusterPath(`/assets/`));
     }
 
-    async get(ref: string): Promise<Asset> {
-        return simpleFetch(clusterPath(`/assets/read`, { ref }));
+    async get(ref: string, ensure: boolean = true): Promise<Asset> {
+        return simpleFetch(clusterPath(`/assets/read`, {ref, ensure: String(ensure)}));
     }
 
     async import(ref: string): Promise<Asset[]> {
-        const out = await simpleFetch(clusterPath(`/assets/import`, { ref }), {
+        const out = await simpleFetch(clusterPath(`/assets/import`, {ref}), {
             method: 'PUT',
         });
 
@@ -49,7 +49,7 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
     }
 
     async create(path: string, content: SchemaKind): Promise<Asset[]> {
-        const out = await simpleFetch(clusterPath(`/assets/create`, { path }), {
+        const out = await simpleFetch(clusterPath(`/assets/create`, {path}), {
             headers: {
                 'Content-Type': 'application/yaml',
             },
@@ -63,7 +63,7 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
     }
 
     async update(ref: string, content: SchemaKind) {
-        await simpleFetch(clusterPath(`/assets/update`, { ref }), {
+        await simpleFetch(clusterPath(`/assets/update`, {ref}), {
             headers: {
                 'Content-Type': 'application/yaml',
             },
@@ -75,11 +75,26 @@ class AssetServiceImpl extends EventEmitter implements AssetStore {
     }
 
     async remove(ref: string): Promise<void> {
-        await simpleFetch(clusterPath(`/assets/`, { ref }), {
+        await simpleFetch(clusterPath(`/assets/`, {ref}), {
             method: 'DELETE',
         });
 
         this.emit('change');
+    }
+
+    /**
+     * Installs the asset with the given ref
+     *
+     * @returns A list of task ids
+     */
+    async install(ref: string): Promise<string[]> {
+        const result = await simpleFetch(clusterPath(`/assets/install`, {ref}), {
+            method: 'PUT',
+        });
+
+        this.emit('change');
+
+        return result
     }
 
     /**

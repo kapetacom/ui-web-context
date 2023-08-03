@@ -12,6 +12,7 @@ class SocketServiceImpl {
         if (
             typeof window !== 'undefined' &&
             window['Kapeta'] &&
+            !window['KapetaDesktop'] && //We're inside a browser - but in desktop mode
             window['Kapeta']['config'] &&
             window['Kapeta']['config'].socket_enabled !== undefined
         ) {
