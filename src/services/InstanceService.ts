@@ -88,6 +88,9 @@ class InstanceServiceImpl {
         return simpleFetch(clusterPath(`/instances`), { method: 'GET' });
     }
 
+    async getInstanceStatusForInstance(systemId, instanceId) {
+        return simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/instances/${encodeURIComponent(instanceId)}`), { method: 'GET' });
+    }
     async getInstanceStatusForPlan(systemId) {
         return simpleFetch(clusterPath(`/instances/${encodeURIComponent(systemId)}/instances`), { method: 'GET' });
     }
