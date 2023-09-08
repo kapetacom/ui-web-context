@@ -86,9 +86,11 @@ export interface FailedBlockMessage {
 export enum InstanceStatus {
     STARTING = 'starting',
     READY = 'ready',
-    UNHEALTHY = 'unhealthy',
-    EXITED = 'exited',
+    STOPPING = 'stopping',
     STOPPED = 'stopped',
+    BUSY = 'busy',
+    UNHEALTHY = 'unhealthy',
+    FAILED = 'failed',
 }
 
 export interface SystemInfo {
