@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { Asset, FileInfo, Identity, MemberIdentity, SchemaKind } from '@kapeta/ui-web-types';
 import { BlockDefinition } from '@kapeta/schemas';
 

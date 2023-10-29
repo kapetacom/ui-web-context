@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import * as _ from 'lodash';
 
 import { IResourceTypeProvider, IResourceTypeConverter } from '@kapeta/ui-web-types';
