@@ -18,6 +18,11 @@
         "kapeta"
     ],
     "license": "MIT",
+    "author": {
+        "email": "engineering@kapeta.com",
+        "name": "Kapeta",
+        "url": "https://kapeta.com"
+    },
     "scripts": {
         "start": "rollup -c -w",
         "prebuild": "rm -rf dist",

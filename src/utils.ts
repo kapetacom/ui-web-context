@@ -1,4 +1,9 @@
 /**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
+/**
  * Ensures that only 1 instance is used consistently.
  *
  * A bit of an anti-pattern though - should be refactored into creating and providing these specifically

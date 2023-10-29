@@ -1,3 +1,8 @@
+/**
+ * Copyright 2023 Kapeta Inc.
+ * SPDX-License-Identifier: MIT
+ */
+
 import { ILanguageTargetProvider } from '@kapeta/ui-web-types';
 import { VersionMap } from './VersionMap';
 import { asSingleton } from './utils';
