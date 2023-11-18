@@ -9,6 +9,7 @@ import { IResourceTypeProvider, IResourceTypeConverter } from '@kapeta/ui-web-ty
 import { Resource } from '@kapeta/schemas';
 import { VersionMap } from './VersionMap';
 import { asSingleton } from './utils';
+import { parseKapetaUri } from '@kapeta/nodejs-utils';
 
 class ResourceTypeProviderImpl {
     private resourceTypeMap = new VersionMap<IResourceTypeProvider>();
@@ -46,7 +47,9 @@ class ResourceTypeProviderImpl {
     }
 
     canApplyResourceToKind(resourceKind: string, targetKind: string) {
-        if (resourceKind === targetKind) {
+        const resourceUri = parseKapetaUri(resourceKind);
+        const targetUri = parseKapetaUri(targetKind);
+        if (resourceUri.equals(targetUri)) {
             return true;
         }
 
