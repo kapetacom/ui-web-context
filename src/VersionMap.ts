@@ -3,50 +3,11 @@
  * SPDX-License-Identifier: MIT
  */
 
-import { parseKapetaUri } from '@kapeta/nodejs-utils';
+import { parseKapetaUri, parseVersion } from '@kapeta/nodejs-utils';
 
 interface SomeKind {
     kind: string;
     version: string;
-}
-
-class Version {
-    public readonly name?: string;
-    public readonly major?: number;
-    public readonly minor?: number;
-    public readonly patch?: number;
-    public readonly semver: boolean;
-
-    constructor(version) {
-        if (/^\d+\.\d+\.\d+$/.test(version)) {
-            //Semantic version
-            this.semver = true;
-            const [major, minor, patch] = version.split(/\./g).map((num) => parseInt(num));
-
-            this.major = major;
-            this.minor = minor;
-            this.patch = patch;
-        } else {
-            this.name = version;
-            this.semver = false;
-        }
-    }
-
-    isBiggerThan(other: Version) {
-        if (!this.semver || !other.semver) {
-            return false;
-        }
-
-        if (this.major > other.major) {
-            return true;
-        }
-
-        if (this.minor > other.minor) {
-            return true;
-        }
-
-        return this.patch > other.patch;
-    }
 }
 
 export interface ParsedKind {
@@ -109,15 +70,7 @@ export class VersionMap<T extends SomeKind> {
         const out = Array.from(this.versions.get(name).keys());
 
         out.sort((a, b) => {
-            if (a === b) {
-                return 0;
-            }
-
-            if (new Version(a).isBiggerThan(new Version(b))) {
-                return 1;
-            }
-
-            return -1;
+            return parseVersion(a).compareTo(parseVersion(b)) * -1;
         });
 
         return out;
@@ -145,21 +98,21 @@ export class VersionMap<T extends SomeKind> {
     }
 
     add(entity: T): void {
-        const kind = entity.kind.toLowerCase();
-        if (!this.versions.has(kind)) {
-            this.versions.set(kind, new Map<string, T>());
+        const uri = parseKapetaUri(entity.kind);
+        if (!this.versions.has(uri.fullName)) {
+            this.versions.set(uri.fullName, new Map<string, T>());
         }
 
-        this.versions.get(kind).set(entity.version, entity);
+        this.versions.get(uri.fullName).set(entity.version, entity);
 
-        if (this.latestVersions.has(kind)) {
-            const latestVersion = new Version(this.latestVersions.get(kind));
-            const thisVersion = new Version(entity.version);
-            if (thisVersion.isBiggerThan(latestVersion)) {
-                this.latestVersions.set(kind, entity.version);
+        if (this.latestVersions.has(uri.fullName)) {
+            const latestVersion = parseVersion(this.latestVersions.get(uri.fullName));
+            const thisVersion = parseVersion(entity.version);
+            if (thisVersion.isGreaterThan(latestVersion)) {
+                this.latestVersions.set(uri.fullName, entity.version);
             }
         } else {
-            this.latestVersions.set(kind, entity.version);
+            this.latestVersions.set(uri.fullName, entity.version);
         }
     }
 }
