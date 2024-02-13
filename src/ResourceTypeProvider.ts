@@ -3,10 +3,15 @@
  * SPDX-License-Identifier: MIT
  */
 
-import * as _ from 'lodash';
+import { find, uniq, cloneDeep } from 'lodash';
 
-import { IResourceTypeProvider, IResourceTypeConverter } from '@kapeta/ui-web-types';
-import { Resource } from '@kapeta/schemas';
+import {
+    IResourceTypeProvider,
+    IResourceTypeConverter,
+    ResourceWithSpec,
+    ConnectionMethodsMapping,
+} from '@kapeta/ui-web-types';
+import { Entity, ResourceMetadata } from '@kapeta/schemas';
 import { VersionMap } from './VersionMap';
 import { asSingleton } from './utils';
 import { parseKapetaUri } from '@kapeta/nodejs-utils';
@@ -57,14 +62,18 @@ class ResourceTypeProviderImpl {
 
         const parsedResourceKind = this.resourceTypeMap.parseKind(resourceKind);
 
-        if (targetConfig.converters && _.find(targetConfig.converters, { fromKind: parsedResourceKind.name })) {
+        if (targetConfig.converters && find(targetConfig.converters, { fromKind: parsedResourceKind.name })) {
             return true;
         }
 
         return false;
     }
 
-    renameEntityReferences(resource: Resource, from: string, to: string): void {
+    renameEntityReferences<Spec, Metadata extends ResourceMetadata>(
+        resource: ResourceWithSpec<Spec, Metadata>,
+        from: string,
+        to: string
+    ): void {
         const resourceConfig = this.get(resource.kind);
 
         if (!resourceConfig.renameEntityReferences) {
@@ -74,7 +83,7 @@ class ResourceTypeProviderImpl {
         resourceConfig.renameEntityReferences(resource, from, to);
     }
 
-    resolveEntities(resource: Resource): string[] {
+    resolveEntities<Spec, Metadata extends ResourceMetadata>(resource: ResourceWithSpec<Spec, Metadata>): string[] {
         const resourceConfig = this.get(resource.kind);
 
         if (!resourceConfig.resolveEntities) {
@@ -83,23 +92,30 @@ class ResourceTypeProviderImpl {
 
         const usedEntityNames = resourceConfig.resolveEntities(resource);
 
-        return _.uniq(usedEntityNames);
+        return uniq(usedEntityNames);
     }
 
-    getConverterFor(resourceKind: string, targetKind: string): IResourceTypeConverter | undefined {
+    getConverterFor<Spec, Metadata extends ResourceMetadata>(
+        resourceKind: string,
+        targetKind: string
+    ): IResourceTypeConverter<Spec, ConnectionMethodsMapping, Entity, Metadata> | undefined {
         const parsedTargetKind = this.resourceTypeMap.parseKind(targetKind);
         const parsedResourceKind = this.resourceTypeMap.parseKind(resourceKind);
         const targetConfig = this.get(parsedTargetKind.id);
 
         if (targetConfig.converters) {
-            return _.find(targetConfig.converters, { fromKind: parsedResourceKind.name });
+            return find(targetConfig.converters, { fromKind: parsedResourceKind.name }) as
+                | IResourceTypeConverter<Spec, ConnectionMethodsMapping, Entity, Metadata>
+                | undefined; // Bypass the type check
         }
 
         return undefined;
     }
 
-    convertToConsumable(fromKind: Resource): Resource {
-        const data = _.cloneDeep(fromKind);
+    convertToConsumable<Spec, Metadata extends ResourceMetadata>(
+        fromKind: ResourceWithSpec<Spec, Metadata>
+    ): ResourceWithSpec<Spec, Metadata> {
+        const data = cloneDeep(fromKind);
         const targetConfig = this.get(fromKind.kind);
         if (!targetConfig.consumableKind) {
             return data;
@@ -108,7 +124,10 @@ class ResourceTypeProviderImpl {
         return this.convertTo(data, targetConfig.consumableKind);
     }
 
-    convertTo(fromKind: Resource, targetKind: string): Resource {
+    convertTo<Spec, Metadata extends ResourceMetadata>(
+        fromKind: ResourceWithSpec<Spec, Metadata>,
+        targetKind: string
+    ): ResourceWithSpec<Spec, Metadata> {
         let parsedTargetKind = this.resourceTypeMap.parseKind(targetKind);
         const parsedFromKind = this.resourceTypeMap.parseKind(fromKind.kind);
 
@@ -126,7 +145,7 @@ class ResourceTypeProviderImpl {
             return { ...fromKind };
         }
 
-        const converter = this.getConverterFor(parsedFromKind.id, parsedTargetKind.id);
+        const converter = this.getConverterFor<Spec, Metadata>(parsedFromKind.id, parsedTargetKind.id);
         if (!converter || !converter.createFrom) {
             return { ...fromKind, kind: parsedTargetKind.id };
         }
